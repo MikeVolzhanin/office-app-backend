@@ -178,7 +178,6 @@ public class IdeaPostService {
         post.setAttachedImages(convertStringToUrlList(ideaPost.getAttachedImages()));
 
         post.setLikesCount(ideaPost.getLikesCount());
-        //likesRepository.findByUserIdAndPostId(ideaPost.getUserId(), ideaPost).isPresent()
         post.setIsLikePressed(true);
 
         post.setDislikesCount(ideaPost.getDislikesCount());
