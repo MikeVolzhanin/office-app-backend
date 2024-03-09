@@ -40,10 +40,6 @@ public class AuthService {
         User user =  userService.findByEmail(userDetails.getUsername()).get();
         String token = jwtTokenUtils.generateToken(userDetails);
 
-        if(refreshTokenService.findByUserId(user.getId()).isPresent()){
-            refreshTokenService.deleteByUserId(user.getId());
-        }
-
         RefreshToken refreshToken = refreshTokenService.createRefreshToken(
                 userService.findByEmail(userDetails.getUsername()).get().getId()
         );

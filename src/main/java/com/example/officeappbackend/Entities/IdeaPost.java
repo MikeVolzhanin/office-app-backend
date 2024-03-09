@@ -38,15 +38,15 @@ public class IdeaPost {
     @Column(name = "dislikes_count")
     private Integer dislikesCount;
 
-    @Column(name = "is_dislike_pressed")
-    private Boolean isDislikePressed;
-
     @Column(name = "comments_count")
     private Integer commentsCount;
 
     @Column(name = "created_at")
     private Date createdAt;
 
-    @OneToMany(mappedBy = "PostId")
+    @OneToMany(mappedBy = "postId")
     private List<Likes> likes;
+
+    @OneToMany(mappedBy = "postId")
+    private List<Dislikes> dislikes;
 }

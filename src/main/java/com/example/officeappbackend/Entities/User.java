@@ -52,8 +52,11 @@ public class User {
     @OneToMany(mappedBy = "userId")
     private List<IdeaPost> posts;
 
-    @OneToMany(mappedBy = "UserId")
+    @OneToMany(mappedBy = "userId")
     private List<Likes> likes;
+
+    @OneToMany(mappedBy = "userId")
+    private List<Dislikes> dislikes;
 
     @OneToOne(mappedBy = "user")
     private RefreshToken refreshToken;

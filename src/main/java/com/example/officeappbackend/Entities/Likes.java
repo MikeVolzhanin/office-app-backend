@@ -1,7 +1,9 @@
 package com.example.officeappbackend.Entities;
 
 import jakarta.persistence.*;
+import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.RequiredArgsConstructor;
 
 @Data
 @Entity
@@ -14,10 +16,10 @@ public class Likes {
 
     @ManyToOne
     @JoinColumn(name = "user_id", referencedColumnName = "id")
-    private User UserId;
+    private User userId;
 
     @ManyToOne
     @JoinColumn(name = "post_id", referencedColumnName = "id")
-    private IdeaPost PostId;
+    private IdeaPost postId;
 
 }

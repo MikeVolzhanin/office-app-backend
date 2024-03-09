@@ -1,13 +1,14 @@
 package com.example.officeappbackend.dto;
 
+import lombok.AllArgsConstructor;
 import lombok.Data;
 
 import java.util.List;
 
 @Data
-public class PublishPostDto {
+@AllArgsConstructor
+public class EditPostDto {
     private String title;
     private String content;
-    private Long office;
     private List<String> attachedImages;
 }

@@ -36,7 +36,7 @@ public class AuthController {
     public ResponseEntity<?> createNewUser(@RequestBody RegistrationUserDto registrationUserDto){
         return authService.createNewUser(registrationUserDto);
     }
-    @PostMapping("/refresh-token")
+    @GetMapping("/refresh-token")
     public ResponseEntity<?> refreshToken(@Valid @RequestBody TokenRefreshRequest request) {
         String requestRefreshToken = request.getRefreshToken();
 
@@ -47,7 +47,7 @@ public class AuthController {
                     String token = jwtTokenUtils.generateToken(
                             userService.loadUserByUsername(user.getEmail())
                     );
-                    return ResponseEntity.ok(new TokenRefreshResponse(token, requestRefreshToken));
+                    return ResponseEntity.ok(new TokenRefreshResponse(token, refreshTokenService.createRefreshToken(user.getId()).getToken()));
                 })
                 .orElseThrow(() -> new TokenRefreshException(requestRefreshToken,
                         "Refresh token is not in database!"));

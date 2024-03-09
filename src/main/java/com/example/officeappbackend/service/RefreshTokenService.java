@@ -1,6 +1,7 @@
 package com.example.officeappbackend.service;
 
 import com.example.officeappbackend.Entities.RefreshToken;
+import com.example.officeappbackend.Entities.User;
 import com.example.officeappbackend.exceptions.TokenRefreshException;
 import com.example.officeappbackend.repositories.RefreshTokenRepository;
 import com.example.officeappbackend.repositories.UserRepository;
@@ -26,12 +27,18 @@ public class RefreshTokenService {
         return refreshTokenRepository.findByToken(token);
     }
 
+    @Transactional
     public RefreshToken createRefreshToken(Long userId) {
         RefreshToken refreshToken = new RefreshToken();
+        User user = userRepository.findById(userId).get();
+
+        if(findByUserId(user.getId()).isPresent()){
+            deleteByUserId(user.getId());
+        }
 
         Date issuedDate = new Date();
         Date expiredDate = new Date(issuedDate.getTime() + refreshTokenDurationMin.toMillis());
-        refreshToken.setUser(userRepository.findById(userId).get());
+        refreshToken.setUser(user);
         refreshToken.setExpiryDate(expiredDate);
         refreshToken.setToken(UUID.randomUUID().toString());
 
@@ -47,8 +54,8 @@ public class RefreshTokenService {
         return token;
     }
     @Transactional
-    public int deleteByUserId(Long userId) {
-        return refreshTokenRepository.deleteByUser(userRepository.findById(userId).get());
+    public void deleteByUserId(Long userId) {
+        refreshTokenRepository.deleteByUser(userRepository.findById(userId).get());
     }
 
     public Optional<RefreshToken> findByUserId(Long id){

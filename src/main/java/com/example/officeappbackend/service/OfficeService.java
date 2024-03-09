@@ -4,8 +4,6 @@ import com.example.officeappbackend.Entities.Office;
 import com.example.officeappbackend.dto.OfficeDto;
 import com.example.officeappbackend.repositories.OfficeRepository;
 import lombok.RequiredArgsConstructor;
-import org.modelmapper.ModelMapper;
-import org.springframework.stereotype.Repository;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -15,7 +13,6 @@ import java.util.Optional;
 @RequiredArgsConstructor
 public class OfficeService {
     private final OfficeRepository officeRepository;
-    private final ModelMapper modelMapper;
     public Optional<Office> findByAddress(String address){
         return officeRepository.findByAddress(address);
     }
@@ -29,6 +26,10 @@ public class OfficeService {
     }
 
     public OfficeDto convertToOfficeDto(Office office){
-        return modelMapper.map(office, OfficeDto.class);
+        return new OfficeDto(
+                office.getId(),
+                office.getImageUrl(),
+                office.getAddress()
+        );
     }
 }

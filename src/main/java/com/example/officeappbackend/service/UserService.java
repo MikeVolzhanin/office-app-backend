@@ -55,8 +55,9 @@ public class UserService implements UserDetailsService {
         user.setEmail(registrationUserDto.getEmail());
         user.setPassword(passwordEncoder.passwordEncoder().encode(registrationUserDto.getPassword()));
 
-        user.setJob("Software Engineer");
+        user.setJob(null);
         user.setCreatedAt(new Date());
+        // Нужно задавать из вне информация про офис
         user.setOffice(officeService.findById(1L).orElse(null));
         user.setRoles(List.of(roleService.getUserRole()));
 

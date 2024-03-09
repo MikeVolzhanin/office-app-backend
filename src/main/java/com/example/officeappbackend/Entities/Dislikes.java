@@ -14,9 +14,9 @@ public class Dislikes {
 
     @ManyToOne
     @JoinColumn(name = "user_id", referencedColumnName = "id")
-    private User UserId;
+    private User userId;
 
     @ManyToOne
     @JoinColumn(name = "post_id", referencedColumnName = "id")
-    private IdeaPost PostId;
+    private IdeaPost postId;
 }

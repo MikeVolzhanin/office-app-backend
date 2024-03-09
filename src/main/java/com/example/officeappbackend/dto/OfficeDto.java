@@ -1,9 +1,12 @@
 package com.example.officeappbackend.dto;
 
+import lombok.AllArgsConstructor;
 import lombok.Data;
 
 @Data
+@AllArgsConstructor
 public class OfficeDto {
-    public String address;
-    public String imageUrl;
+    private Long id;
+    private String imageUrl;
+    private String address;
 }

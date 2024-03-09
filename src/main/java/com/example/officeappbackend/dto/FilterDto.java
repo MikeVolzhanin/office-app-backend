@@ -6,6 +6,6 @@ import java.util.List;
 
 @Data
 public class FilterDto {
-    private List<Integer> officesId;
+    private List<Long> officesId;
     private Integer sortingFilterId;
 }

@@ -1,5 +1,6 @@
 package com.example.officeappbackend.controllers;
 
+import com.example.officeappbackend.Entities.Office;
 import com.example.officeappbackend.dto.OfficeDto;
 import com.example.officeappbackend.dto.UserDto;
 import com.example.officeappbackend.service.OfficeService;
@@ -27,9 +28,8 @@ public class UserController {
     public ResponseEntity<?> updateUserInfo(@RequestBody UserDto user){
         return userService.updateUserInfo(user);
     }
-    @GetMapping("/available-offices")
+    @GetMapping("/offices")
     public List<OfficeDto> getAvailableOffices(){
-        return officeService.getAvailableOffices().stream().map(
-                officeService::convertToOfficeDto).collect(Collectors.toList());
+        return officeService.getAvailableOffices().stream().map(officeService::convertToOfficeDto).collect(Collectors.toList());
     }
 }
