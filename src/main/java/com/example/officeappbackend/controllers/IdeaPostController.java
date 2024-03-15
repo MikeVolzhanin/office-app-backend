@@ -63,7 +63,7 @@ public class IdeaPostController {
     @PostMapping("{id}/dislike")
     public ResponseEntity<?> dislikePost(@PathVariable("id") Long id, Principal principal){
         ideaPostService.dislikePost(id, principal);
-        return ResponseEntity.ok(new Success("DisLike was added successfully",
+        return ResponseEntity.ok(new Success("Dislike was added successfully",
                 new Date()
         ));
     }

@@ -12,5 +12,6 @@ import java.util.Optional;
 @Repository
 public interface LikesRepository extends JpaRepository<Likes, Long> {
     void deleteByUserIdAndPostId(User userId, IdeaPost post);
+    void deleteByPostId(IdeaPost postId);
     Optional<Likes> findByUserIdAndPostId(User userId, IdeaPost post);
 }

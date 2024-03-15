@@ -54,7 +54,11 @@ public class IdeaPostService {
         ideaPostRepository.save(currentPost);
     }
 
+    @Transactional
     public void deletePost(Long id){
+        IdeaPost currentPost = ideaPostRepository.findById(id).get();
+        likesRepository.deleteByPostId(currentPost);
+        dislikesRepository.deleteByPostId(currentPost);
         ideaPostRepository.deleteById(id);
     }
 
