@@ -1,0 +1,34 @@
+version: "3.8"
+
+services:
+  psql-db:
+    image: postgres
+    container_name: psql-db
+    restart: always
+    environment:
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=89194161213
+      - POSTGRES_DB=office_app_db
+    ports:
+      - '5432:5432'
+    volumes:
+      - ./database_data:/var/lib/postgresql/data
+      - ./backup.sql:/docker-entrypoint-initdb.d/office_app_db.sql
+
+
+  backend:
+    container_name: backend-app_cont
+    build:
+      context: .
+      dockerfile: Dockerfile
+    ports:
+      - '8081:8189'
+    environment:
+      - SPRING_DATASOURCE_URL=jdbc:postgresql://psql-db:5432/office_app_db
+      - SPRING_DATASOURCE_USERNAME=postgres
+      - SPRING_DATASOURCE_PASSWORD=89194161213
+    depends_on:
+      - psql-db
+
+
+

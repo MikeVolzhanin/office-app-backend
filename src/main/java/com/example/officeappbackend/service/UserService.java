@@ -29,7 +29,7 @@ public class UserService implements UserDetailsService {
     private final RoleService roleService;
     private final OfficeService officeService;
     private final PasswordEncoder passwordEncoder;
-    private final ModelMapper modelMapper;
+
     public Optional<User> findByEmail(String username){
         return userRepository.findByEmail(username);
     }
@@ -49,6 +49,8 @@ public class UserService implements UserDetailsService {
     }
 
     public User createNewUser(RegistrationUserDto registrationUserDto){
+        roleService.startApplication();
+
         User user = new User();
         user.setSurname(registrationUserDto.getSurname());
         user.setName(registrationUserDto.getName());

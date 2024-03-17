@@ -5,7 +5,6 @@ import com.example.officeappbackend.dto.*;
 import com.example.officeappbackend.repositories.DislikesRepository;
 import com.example.officeappbackend.repositories.IdeaPostRepository;
 import com.example.officeappbackend.repositories.LikesRepository;
-import com.example.officeappbackend.repositories.SortingFilterRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -22,7 +21,15 @@ public class IdeaPostService {
     private final OfficeService officeService;
     private final LikesRepository likesRepository;
     private final DislikesRepository dislikesRepository;
-    private final SortingFilterRepository sortingFilterRepository;
+
+    public Map<Integer, String> getFiltersMap(){
+        Map<Integer, String> filters = new HashMap<>();
+        filters.put(1, "by comments");
+        filters.put(2, "by likes");
+        filters.put(3, "by dislikes");
+        filters.put(4, "nothing");
+        return filters;
+    }
 
     @Transactional
     public void publishPost(PublishPostDto post, Principal principal){
@@ -123,9 +130,10 @@ public class IdeaPostService {
 
     // Обработать ошибки
     public List<IdeaPostDto> getPosts(Integer page, Integer pageSize, FilterDto filterDto){
+        Map<Integer, String> filters = getFiltersMap();
         Integer sortingFilterId = filterDto.getSortingFilterId();
-        String filterName = sortingFilterRepository.findById(sortingFilterId).orElse(null).getName();
         List<Long> offices = filterDto.getOfficesId();
+        String filterName = filters.get(sortingFilterId);
         List<IdeaPostDto> posts = new ArrayList<>();
 
         for(Long id : offices){
@@ -165,8 +173,11 @@ public class IdeaPostService {
 
     public Filters getFilters(){
         List<OfficeDto> offices = officeService.getAvailableOffices().stream().map(officeService::convertToOfficeDto).collect(Collectors.toList());
-        List<SortingFilter> sortingFilters = sortingFilterRepository.findAll();
-
+        List<SortingFilter> sortingFilters = new ArrayList<>();
+        Map<Integer, String> filters = getFiltersMap();
+        for(int i = 1; i < 5; i++){
+            sortingFilters.add(new SortingFilter(i, filters.get(i)));
+        }
         return new Filters(offices, sortingFilters);
     }
 

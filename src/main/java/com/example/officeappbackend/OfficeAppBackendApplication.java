@@ -13,13 +13,4 @@ public class OfficeAppBackendApplication {
 		SpringApplication.run(OfficeAppBackendApplication.class, args);
 	}
 
-	@Bean
-	public ModelMapper getMapper() {
-		return new ModelMapper();
-	}
-
-	@Bean
-	HiddenHttpMethodFilter hiddenHttpMethodFilter() {
-		return new HiddenHttpMethodFilter();
-	}
 }
