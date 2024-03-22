@@ -16,7 +16,6 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.bind.annotation.RequestBody;
 
 import java.util.Date;
-import java.util.List;
 
 @Service
 @RequiredArgsConstructor
@@ -52,11 +51,18 @@ public class AuthService {
             return new ResponseEntity<>(new AppError(HttpStatus.BAD_REQUEST.value(), "Пароли не совпадают", new Date()), HttpStatus.BAD_REQUEST);
         }
         if(userService.findByEmail(registrationUserDto.getEmail()).isPresent()){
-            return new ResponseEntity<>(new AppError(HttpStatus.BAD_REQUEST.value(), "Пользователи с указанным именем уже существуют", new Date()), HttpStatus.BAD_REQUEST);
+            return new ResponseEntity<>(new AppError(HttpStatus.BAD_REQUEST.value(), "Пользователи с указанным email уже существуют", new Date()), HttpStatus.BAD_REQUEST);
         }
         User user = userService.createNewUser(registrationUserDto);
-        return ResponseEntity.ok(new UserDto(user.getId(), user.getName(), user.getSurname(), user.getEmail(), user.getJob(), user.getPhoto(),
-                List.of(user.getOffice().getAddress(), user.getOffice().getImageUrl())));
+        return createAuthToken(new JwtRequest(registrationUserDto.getEmail(), registrationUserDto.getPassword()));
     }
 
+    public ResponseEntity<?> emailValidation(EmailDto email){
+        if(userService.findByEmail(email.getEmail()).isPresent()){
+            return new ResponseEntity<>(HttpStatus.OK);
+        }
+        else{
+            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+        }
+    }
 }

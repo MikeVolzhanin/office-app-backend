@@ -129,7 +129,7 @@ public class IdeaPostService {
     }
 
     // Обработать ошибки
-    public List<IdeaPostDto> getPosts(Integer page, Integer pageSize, FilterDto filterDto){
+    public List<IdeaPostDto> getPosts(Integer page, Integer pageSize, FilterDto filterDto, Principal principal, Long authorId){
         Map<Integer, String> filters = getFiltersMap();
         Integer sortingFilterId = filterDto.getSortingFilterId();
         List<Long> offices = filterDto.getOfficesId();
@@ -137,9 +137,24 @@ public class IdeaPostService {
         List<IdeaPostDto> posts = new ArrayList<>();
 
         for(Long id : offices){
-            posts.addAll(
-                    ideaPostRepository.findByOfficeId(officeService.findById(id).get()).stream().map(this::convertToIdeaPostDto).toList()
-            );
+            List<IdeaPost> list = ideaPostRepository.findByOfficeId(officeService.findById(id).get());
+            if(filterDto.getText() != null){
+                for(IdeaPost post : list) {
+                    if(post.getTitle().contains(filterDto.getText()))
+                        posts.add(convertToIdeaPostDto(post, principal));
+                }
+            }
+            else if(authorId != null){
+                for(IdeaPost post : list) {
+                    if(Objects.equals(post.getUserId().getId(), authorId))
+                        posts.add(convertToIdeaPostDto(post, principal));
+                }
+            }
+            else{
+                for(IdeaPost post : list) {
+                    posts.add(convertToIdeaPostDto(post, principal));
+                }
+            }
         }
 
         if(filterName.equals("by comments")) {
@@ -157,8 +172,10 @@ public class IdeaPostService {
         int items = posts.size();
         int pages = (int) Math.ceil((double) items / pageSize);
 
+
+
         if(pages < page){
-            System.out.println("Кол-во страниц меньше чем запрашивается");
+            System.out.println("The number of page is less then required");
             return null;
         }
 
@@ -167,6 +184,9 @@ public class IdeaPostService {
 
         if(toInd > items)
             toInd = items;
+
+        if(items == 1)
+            return List.of(posts.get(0));
 
         return posts.subList(fromInd, toInd);
     }
@@ -181,8 +201,14 @@ public class IdeaPostService {
         return new Filters(offices, sortingFilters);
     }
 
+    public IdeaPostDto findPostById(Long id, Principal principal){
+        Optional<IdeaPost> post = ideaPostRepository.findById(id);
+        return post.map(ideaPost -> convertToIdeaPostDto(ideaPost, principal)).orElse(null);
+    }
+
     // дописать проверку like'ов
-    public IdeaPostDto convertToIdeaPostDto(IdeaPost ideaPost) {
+    public IdeaPostDto convertToIdeaPostDto(IdeaPost ideaPost, Principal principal) {
+
         IdeaPostDto post = new IdeaPostDto();
 
         post.setId(ideaPost.getId());
@@ -193,11 +219,10 @@ public class IdeaPostService {
         post.setAttachedImages(convertStringToUrlList(ideaPost.getAttachedImages()));
 
         post.setLikesCount(ideaPost.getLikesCount());
-        post.setIsLikePressed(true);
+        post.setIsLikePressed(likesRepository.findByUserIdAndPostId(userService.findByEmail(principal.getName()).get(), ideaPost).isPresent());
 
         post.setDislikesCount(ideaPost.getDislikesCount());
-        //dislikesRepository.findByUserIdAndPostId(ideaPost.getUserId(), ideaPost).isPresent()
-        post.setIsDislikePressed(true);
+        post.setIsDislikePressed(dislikesRepository.findByUserIdAndPostId(userService.findByEmail(principal.getName()).get(), ideaPost).isPresent());
 
         post.setCommentsCount(ideaPost.getCommentsCount());
         post.setCreatedAt(ideaPost.getCreatedAt());

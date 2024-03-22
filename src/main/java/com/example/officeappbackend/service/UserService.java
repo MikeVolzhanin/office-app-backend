@@ -91,6 +91,12 @@ public class UserService implements UserDetailsService {
     public Optional<User> findById(Long id){
         return userRepository.findById(id);
     }
+    public UserDto findByAuthorId(Long id){
+        User author = findById(id).orElse(null);
+        if(author == null)
+            return null;
+        return convertToUserDto(author);
+    }
 
     public UserDto convertToUserDto(User user){
         return new UserDto(

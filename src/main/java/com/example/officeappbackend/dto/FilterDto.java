@@ -8,4 +8,5 @@ import java.util.List;
 public class FilterDto {
     private List<Long> officesId;
     private Integer sortingFilterId;
+    private String text;
 }

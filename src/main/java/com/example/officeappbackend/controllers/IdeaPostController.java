@@ -1,8 +1,10 @@
 package com.example.officeappbackend.controllers;
 
 import com.example.officeappbackend.dto.*;
+import com.example.officeappbackend.exceptions.AppError;
 import com.example.officeappbackend.service.IdeaPostService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -23,6 +25,26 @@ public class IdeaPostController {
                 "Post added successfully",
                 new Date()
         ));
+    }
+
+    @GetMapping("/by-author-id/{authorId}")
+    public ResponseEntity<?> getPostByAuthorId(@PathVariable("authorId") Long authorId, @RequestParam(name = "page") Integer page, @RequestParam(name = "page_size") Integer pageSize, Principal principal){
+        FilterDto filterDto = new FilterDto();
+        filterDto.setSortingFilterId(4);
+        filterDto.setText(null);
+        filterDto.setOfficesId(List.of(1L, 2L, 3L, 4L, 5L));
+        List<IdeaPostDto> posts = ideaPostService.getPosts(page, pageSize, filterDto, principal, authorId);
+        if(posts == null)
+            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+        return ResponseEntity.ok(posts);
+    }
+
+    @GetMapping("/{id}")
+    public ResponseEntity<?> getPostById(@PathVariable Long id, Principal principal){
+        if(ideaPostService.findPostById(id, principal) == null){
+            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+        }
+        return ResponseEntity.ok(ideaPostService.findPostById(id, principal));
     }
 
     @PatchMapping("/{id}")
@@ -75,13 +97,16 @@ public class IdeaPostController {
     }
 
     @GetMapping
-    public ResponseEntity<?> showPosts(@RequestParam(name = "page") Integer page, @RequestParam(name = "page_size") Integer pageSize, @RequestBody FilterDto filterDto){
-        List<IdeaPostDto> resultPosts = ideaPostService.getPosts(page, pageSize, filterDto);
+    public ResponseEntity<?> showPosts(@RequestParam(name = "page") Integer page, @RequestParam(name = "page_size") Integer pageSize, @RequestBody FilterDto filterDto, Principal principal){
+        if(ideaPostService.getPosts(page, pageSize, filterDto, principal, null) == null)
+            return new ResponseEntity<>(new AppError(HttpStatus.BAD_REQUEST.value(), "The number of pages less than required", new Date()), HttpStatus.BAD_REQUEST);
+        List<IdeaPostDto> resultPosts = ideaPostService.getPosts(page, pageSize, filterDto, principal, null);
         return ResponseEntity.ok(resultPosts);
     }
 
     @GetMapping("/filters")
     public ResponseEntity<?> showFilters(){
-        return ResponseEntity.ok(ideaPostService.getFilters());
+        Filters filters = ideaPostService.getFilters();
+        return ResponseEntity.ok(filters);
     }
 }

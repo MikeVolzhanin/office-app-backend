@@ -2,22 +2,19 @@ version: "3.8"
 
 services:
   psql-db:
-    image: postgres
     container_name: psql-db
     restart: always
     environment:
       - POSTGRES_USER=postgres
       - POSTGRES_PASSWORD=89194161213
-      - POSTGRES_DB=office_app_db
+    build:
+      context: .
+      dockerfile: ./devops/db/Dockerfile
     ports:
       - '5432:5432'
-    volumes:
-      - ./database_data:/var/lib/postgresql/data
-      - ./backup.sql:/docker-entrypoint-initdb.d/office_app_db.sql
-
 
   backend:
-    container_name: backend-app_cont
+    container_name: backend-app-cont
     build:
       context: .
       dockerfile: Dockerfile

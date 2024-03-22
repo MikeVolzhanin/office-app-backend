@@ -1,10 +1,7 @@
 package com.example.officeappbackend.controllers;
 
 import com.example.officeappbackend.Entities.RefreshToken;
-import com.example.officeappbackend.dto.JwtRequest;
-import com.example.officeappbackend.dto.RegistrationUserDto;
-import com.example.officeappbackend.dto.TokenRefreshRequest;
-import com.example.officeappbackend.dto.TokenRefreshResponse;
+import com.example.officeappbackend.dto.*;
 import com.example.officeappbackend.exceptions.TokenRefreshException;
 import com.example.officeappbackend.service.AuthService;
 import com.example.officeappbackend.service.RefreshTokenService;
@@ -27,15 +24,23 @@ public class AuthController {
     private final RefreshTokenService refreshTokenService;
     private final JwtTokenUtils jwtTokenUtils;
     private final UserService userService;
-    @PostMapping("/login")
+    @GetMapping("/login")
     public ResponseEntity<?> createAuthToken(@RequestBody JwtRequest authRequest){
         return authService.createAuthToken(authRequest);
     }
-
-    @PostMapping("/registration")
+    @PostMapping("/register")
     public ResponseEntity<?> createNewUser(@RequestBody RegistrationUserDto registrationUserDto){
         return authService.createNewUser(registrationUserDto);
     }
+    @GetMapping("/user-info")
+    public ResponseEntity<?> getUserInfo(Principal principal){
+        return userService.getUserInfo(principal.getName());
+    }
+    @GetMapping("/email-valid")
+    public ResponseEntity<?> emailValidation(@RequestBody EmailDto email){
+        return authService.emailValidation(email);
+    }
+
     @GetMapping("/refresh-token")
     public ResponseEntity<?> refreshToken(@Valid @RequestBody TokenRefreshRequest request) {
         String requestRefreshToken = request.getRefreshToken();
