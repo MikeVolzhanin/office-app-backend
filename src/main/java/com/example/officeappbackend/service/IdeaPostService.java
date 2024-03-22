@@ -6,6 +6,8 @@ import com.example.officeappbackend.repositories.DislikesRepository;
 import com.example.officeappbackend.repositories.IdeaPostRepository;
 import com.example.officeappbackend.repositories.LikesRepository;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -71,13 +73,14 @@ public class IdeaPostService {
 
     // Перед тем как ставить лайк, необходимо проверить, может быть он уже стоит и нет необходимости снова его ставить
     @Transactional
-    public void likePost(Long id, Principal principal){
+    public ResponseEntity<?> likePost(Long id, Principal principal){
         IdeaPost post = ideaPostRepository.findById(id).get();
-
-        Integer likes = post.getLikesCount();
-
         User user = userService.findByEmail(principal.getName()).get();
 
+        if(likesRepository.findByUserIdAndPostId(user, post).isPresent())
+            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+
+        Integer likes = post.getLikesCount();
         post.setLikesCount(++likes);
 
         Likes likeEntity = new Likes();
@@ -87,13 +90,19 @@ public class IdeaPostService {
 
         likesRepository.save(likeEntity);
         ideaPostRepository.save(post);
+        return ResponseEntity.ok(new Success("Like was added successfully",
+                new Date()
+        ));
     }
 
     // Проверка на повтор + не увеличивается кол-во в бд поста
     @Transactional
-    public void dislikePost(Long id, Principal principal){
+    public ResponseEntity<?> dislikePost(Long id, Principal principal){
         IdeaPost post = ideaPostRepository.findById(id).get();
         User user = userService.findByEmail(principal.getName()).get();
+
+        if(dislikesRepository.findByUserIdAndPostId(user, post).isPresent())
+            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
 
         Integer dislike = post.getDislikesCount();
 
@@ -106,6 +115,9 @@ public class IdeaPostService {
         dislikeEntity.setUserId(user);
 
         dislikesRepository.save(dislikeEntity);
+        return ResponseEntity.ok(new Success("Dislike was added successfully",
+                new Date()
+        ));
     }
 
     @Transactional

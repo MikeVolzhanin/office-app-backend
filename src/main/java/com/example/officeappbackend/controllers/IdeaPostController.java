@@ -66,26 +66,20 @@ public class IdeaPostController {
 
     @PostMapping("{id}/like")
     public ResponseEntity<?> likePost(@PathVariable("id") Long id, Principal principal){
-        ideaPostService.likePost(id, principal);
-        return ResponseEntity.ok(new Success("Like was added successfully",
-                new Date()
-        ));
+        return ideaPostService.likePost(id, principal);
     }
 
     @DeleteMapping("{id}/like")
     public ResponseEntity<?> unlikePost(@PathVariable("id") Long id, Principal principal){
         ideaPostService.unlikePost(id, principal);
-        return ResponseEntity.ok(new Success("Like was removed successfully",
+        return  ResponseEntity.ok(new Success("Like was removed successfully",
                 new Date()
         ));
     }
 
     @PostMapping("{id}/dislike")
     public ResponseEntity<?> dislikePost(@PathVariable("id") Long id, Principal principal){
-        ideaPostService.dislikePost(id, principal);
-        return ResponseEntity.ok(new Success("Dislike was added successfully",
-                new Date()
-        ));
+        return ideaPostService.dislikePost(id, principal);
     }
 
     @DeleteMapping("{id}/dislike")
