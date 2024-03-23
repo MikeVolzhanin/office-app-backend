@@ -15,5 +15,5 @@ public class UserDto {
     private String email;
     private String job;
     private String photo;
-    private List<String> office;
+    private OfficeDto office;
 }

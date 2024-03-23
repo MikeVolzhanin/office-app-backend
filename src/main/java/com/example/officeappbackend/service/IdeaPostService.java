@@ -143,7 +143,11 @@ public class IdeaPostService {
     // Обработать ошибки
     public List<IdeaPostDto> getPosts(Integer page, Integer pageSize, FilterDto filterDto, Principal principal, Long authorId){
         Map<Integer, String> filters = getFiltersMap();
-        Integer sortingFilterId = filterDto.getSortingFilterId();
+        int sortingFilterId;
+        if(filterDto.getSortingFilterId() == null)
+            sortingFilterId = 4;
+        else
+            sortingFilterId = filterDto.getSortingFilterId();
         List<Long> offices = filterDto.getOfficesId();
         String filterName = filters.get(sortingFilterId);
         List<IdeaPostDto> posts = new ArrayList<>();

@@ -36,11 +36,10 @@ public class AuthController {
     public ResponseEntity<?> getUserInfo(Principal principal){
         return userService.getUserInfo(principal.getName());
     }
-    @PostMapping("/email-valid/{email}")
-    public ResponseEntity<?> emailValidation(@PathVariable("email") String email){
+    @GetMapping("/email-valid")
+    public ResponseEntity<?> emailValidation(@RequestParam(name = "email") String email){
         return authService.emailValidation(email);
     }
-
     @PostMapping("/refresh-token")
     public ResponseEntity<?> refreshToken(@Valid @RequestBody TokenRefreshRequest request) {
         String requestRefreshToken = request.getRefreshToken();

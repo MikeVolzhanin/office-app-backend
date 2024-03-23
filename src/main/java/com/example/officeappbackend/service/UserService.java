@@ -71,9 +71,9 @@ public class UserService implements UserDetailsService {
 
     @Transactional
     public ResponseEntity<?> updateUserInfo(UserDto user){
-        User updatedUser = findByEmail(user.getEmail()).orElse(null);
+        User updatedUser = findByEmail(user.getEmail()).get();
 
-        updatedUser.setOffice(officeService.findByAddress(user.getOffice().get(0)).orElse(null));
+        updatedUser.setOffice(officeService.findByAddress(user.getOffice().getAddress()).get());
         updatedUser.setJob(user.getJob());
         updatedUser.setName(user.getName());
         updatedUser.setSurname(user.getSurname());
@@ -104,10 +104,7 @@ public class UserService implements UserDetailsService {
                 user.getEmail(),
                 user.getJob(),
                 user.getPhoto(),
-                List.of(
-                        user.getOffice().getAddress(),
-                        user.getOffice().getImageUrl()
-                )
+                officeService.convertToOfficeDto(user.getOffice())
         );
     }
 }
