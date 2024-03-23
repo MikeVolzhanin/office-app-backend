@@ -24,7 +24,7 @@ public class AuthController {
     private final RefreshTokenService refreshTokenService;
     private final JwtTokenUtils jwtTokenUtils;
     private final UserService userService;
-    @GetMapping("/login")
+    @PostMapping("/login")
     public ResponseEntity<?> createAuthToken(@RequestBody JwtRequest authRequest){
         return authService.createAuthToken(authRequest);
     }
@@ -36,12 +36,12 @@ public class AuthController {
     public ResponseEntity<?> getUserInfo(Principal principal){
         return userService.getUserInfo(principal.getName());
     }
-    @GetMapping("/email-valid")
-    public ResponseEntity<?> emailValidation(@RequestBody EmailDto email){
+    @PostMapping("/email-valid/{email}")
+    public ResponseEntity<?> emailValidation(@PathVariable("email") String email){
         return authService.emailValidation(email);
     }
 
-    @GetMapping("/refresh-token")
+    @PostMapping("/refresh-token")
     public ResponseEntity<?> refreshToken(@Valid @RequestBody TokenRefreshRequest request) {
         String requestRefreshToken = request.getRefreshToken();
 

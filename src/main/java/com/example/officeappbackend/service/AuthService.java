@@ -57,8 +57,8 @@ public class AuthService {
         return createAuthToken(new JwtRequest(registrationUserDto.getEmail(), registrationUserDto.getPassword()));
     }
 
-    public ResponseEntity<?> emailValidation(EmailDto email){
-        if(userService.findByEmail(email.getEmail()).isPresent()){
+    public ResponseEntity<?> emailValidation(String email){
+        if(userService.findByEmail(email).isPresent()){
             return new ResponseEntity<>(HttpStatus.OK);
         }
         else{

@@ -150,7 +150,7 @@ public class IdeaPostService {
 
         for(Long id : offices){
             List<IdeaPost> list = ideaPostRepository.findByOfficeId(officeService.findById(id).get());
-            if(filterDto.getText() != null){
+            if(!filterDto.getText().isEmpty()){
                 for(IdeaPost post : list) {
                     if(post.getTitle().contains(filterDto.getText()))
                         posts.add(convertToIdeaPostDto(post, principal));

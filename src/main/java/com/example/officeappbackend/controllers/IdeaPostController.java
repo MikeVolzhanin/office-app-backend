@@ -9,6 +9,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.security.Principal;
+import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
 
@@ -91,7 +92,12 @@ public class IdeaPostController {
     }
 
     @GetMapping
-    public ResponseEntity<?> showPosts(@RequestParam(name = "page") Integer page, @RequestParam(name = "page_size") Integer pageSize, @RequestBody FilterDto filterDto, Principal principal){
+    public ResponseEntity<?> showPosts(@RequestParam(name="office") Long[] office, @RequestParam(name = "search", required = false) String text, @RequestParam(name="search_filter", required = false) Integer sortingFilter,
+                                       @RequestParam(name = "page") Integer page, @RequestParam(name = "page_size") Integer pageSize, Principal principal){
+        FilterDto filterDto = new FilterDto();
+        filterDto.setOfficesId(List.of(office));
+        filterDto.setSortingFilterId(sortingFilter);
+        filterDto.setText(text);
         if(ideaPostService.getPosts(page, pageSize, filterDto, principal, null) == null)
             return new ResponseEntity<>(new AppError(HttpStatus.BAD_REQUEST.value(), "The number of pages less than required", new Date()), HttpStatus.BAD_REQUEST);
         List<IdeaPostDto> resultPosts = ideaPostService.getPosts(page, pageSize, filterDto, principal, null);

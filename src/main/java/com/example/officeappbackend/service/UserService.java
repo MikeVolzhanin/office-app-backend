@@ -49,8 +49,6 @@ public class UserService implements UserDetailsService {
     }
 
     public User createNewUser(RegistrationUserDto registrationUserDto){
-        roleService.startApplication();
-
         User user = new User();
         user.setSurname(registrationUserDto.getSurname());
         user.setName(registrationUserDto.getName());
