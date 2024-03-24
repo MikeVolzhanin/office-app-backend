@@ -2,9 +2,7 @@ package com.example.officeappbackend.service;
 
 import com.example.officeappbackend.Entities.User;
 import com.example.officeappbackend.configs.PasswordEncoder;
-import com.example.officeappbackend.dto.RegistrationUserDto;
-import com.example.officeappbackend.dto.Success;
-import com.example.officeappbackend.dto.UserDto;
+import com.example.officeappbackend.dto.*;
 import com.example.officeappbackend.repositories.UserRepository;
 import lombok.RequiredArgsConstructor;
 
@@ -17,6 +15,7 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.security.Principal;
 import java.util.Date;
 import java.util.List;
 import java.util.Optional;
@@ -50,15 +49,15 @@ public class UserService implements UserDetailsService {
 
     public User createNewUser(RegistrationUserDto registrationUserDto){
         User user = new User();
-        user.setSurname(registrationUserDto.getSurname());
-        user.setName(registrationUserDto.getName());
+        user.setSurname(registrationUserDto.getUserInfo().getSurname());
+        user.setName(registrationUserDto.getUserInfo().getName());
         user.setEmail(registrationUserDto.getEmail());
         user.setPassword(passwordEncoder.passwordEncoder().encode(registrationUserDto.getPassword()));
 
-        user.setJob(null);
+        user.setJob(registrationUserDto.getUserInfo().getJob());
         user.setCreatedAt(new Date());
         // Нужно задавать из вне информация про офис
-        user.setOffice(officeService.findById(1L).orElse(null));
+        user.setOffice(officeService.findById(registrationUserDto.getUserInfo().getOffice()).orElse(null));
         user.setRoles(List.of(roleService.getUserRole()));
 
         return userRepository.save(user);
@@ -70,10 +69,10 @@ public class UserService implements UserDetailsService {
     }
 
     @Transactional
-    public ResponseEntity<?> updateUserInfo(UserDto user){
-        User updatedUser = findByEmail(user.getEmail()).get();
+    public ResponseEntity<?> updateUserInfo(UserInfoForm user, Principal principal){
+        User updatedUser = findByEmail(principal.getName()).get();
 
-        updatedUser.setOffice(officeService.findByAddress(user.getOffice().getAddress()).get());
+        updatedUser.setOffice(officeService.findById(user.getOffice()).get());
         updatedUser.setJob(user.getJob());
         updatedUser.setName(user.getName());
         updatedUser.setSurname(user.getSurname());
@@ -89,13 +88,23 @@ public class UserService implements UserDetailsService {
     public Optional<User> findById(Long id){
         return userRepository.findById(id);
     }
-    public UserDto findByAuthorId(Long id){
+    public IdeaAuthor findByAuthorId(Long id){
         User author = findById(id).orElse(null);
         if(author == null)
             return null;
-        return convertToUserDto(author);
+        return convertToIdeaAuthor(author);
     }
 
+    public IdeaAuthor convertToIdeaAuthor(User user){
+        IdeaAuthor ideaAuthor = new IdeaAuthor();
+        ideaAuthor.setId(user.getId());
+        ideaAuthor.setName(user.getName());
+        ideaAuthor.setSurname(user.getSurname());
+        ideaAuthor.setOffice(officeService.convertToOfficeDto(user.getOffice()));
+        ideaAuthor.setJob(user.getJob());
+        ideaAuthor.setJob(user.getJob());
+        return ideaAuthor;
+    }
     public UserDto convertToUserDto(User user){
         return new UserDto(
                 user.getId(),

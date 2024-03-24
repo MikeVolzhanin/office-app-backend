@@ -10,5 +10,5 @@ import java.util.List;
 @AllArgsConstructor
 public class Filters {
     List<OfficeDto> offices;
-    List<SortingFilter> sortingFilters;
+    List<SortingFilter> sortingCategories;
 }

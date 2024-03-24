@@ -47,9 +47,6 @@ public class AuthService {
     }
 
     public ResponseEntity<?> createNewUser(@RequestBody RegistrationUserDto registrationUserDto){
-        if(!registrationUserDto.getPassword().equals(registrationUserDto.getConfirmPassword())){
-            return new ResponseEntity<>(new AppError(HttpStatus.BAD_REQUEST.value(), "Пароли не совпадают", new Date()), HttpStatus.BAD_REQUEST);
-        }
         if(userService.findByEmail(registrationUserDto.getEmail()).isPresent()){
             return new ResponseEntity<>(new AppError(HttpStatus.BAD_REQUEST.value(), "Пользователи с указанным email уже существуют", new Date()), HttpStatus.BAD_REQUEST);
         }

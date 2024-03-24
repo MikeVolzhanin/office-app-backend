@@ -29,7 +29,6 @@ public class IdeaPostService {
         filters.put(1, "by comments");
         filters.put(2, "by likes");
         filters.put(3, "by dislikes");
-        filters.put(4, "nothing");
         return filters;
     }
 
@@ -143,13 +142,15 @@ public class IdeaPostService {
     // Обработать ошибки
     public List<IdeaPostDto> getPosts(Integer page, Integer pageSize, FilterDto filterDto, Principal principal, Long authorId){
         Map<Integer, String> filters = getFiltersMap();
-        int sortingFilterId;
-        if(filterDto.getSortingFilterId() == null)
-            sortingFilterId = 4;
-        else
-            sortingFilterId = filterDto.getSortingFilterId();
+        Integer sortingFilterId = filterDto.getSortingFilterId();
+        String filterName;
+        if(sortingFilterId == null)
+            filterName = "nothing";
+        else {
+            filterName = filters.get(sortingFilterId);
+        }
         List<Long> offices = filterDto.getOfficesId();
-        String filterName = filters.get(sortingFilterId);
+
         List<IdeaPostDto> posts = new ArrayList<>();
 
         for(Long id : offices){
@@ -211,7 +212,7 @@ public class IdeaPostService {
         List<OfficeDto> offices = officeService.getAvailableOffices().stream().map(officeService::convertToOfficeDto).collect(Collectors.toList());
         List<SortingFilter> sortingFilters = new ArrayList<>();
         Map<Integer, String> filters = getFiltersMap();
-        for(int i = 1; i < 5; i++){
+        for(int i = 1; i < 4; i++){
             sortingFilters.add(new SortingFilter(i, filters.get(i)));
         }
         return new Filters(offices, sortingFilters);
@@ -230,8 +231,8 @@ public class IdeaPostService {
         post.setId(ideaPost.getId());
         post.setTitle(ideaPost.getTitle());
         post.setContent(ideaPost.getContent());
-        post.setUserId(ideaPost.getUserId().getId());
-        post.setOfficeId(ideaPost.getOfficeId().getId());
+        post.setIdeaAuthor(userService.convertToIdeaAuthor(ideaPost.getUserId()));
+        post.setOffice(officeService.convertToOfficeDto(ideaPost.getOfficeId()));
         post.setAttachedImages(convertStringToUrlList(ideaPost.getAttachedImages()));
 
         post.setLikesCount(ideaPost.getLikesCount());
@@ -241,7 +242,7 @@ public class IdeaPostService {
         post.setIsDislikePressed(dislikesRepository.findByUserIdAndPostId(userService.findByEmail(principal.getName()).get(), ideaPost).isPresent());
 
         post.setCommentsCount(ideaPost.getCommentsCount());
-        post.setCreatedAt(ideaPost.getCreatedAt());
+        post.setDate(ideaPost.getCreatedAt());
 
         return post;
     }

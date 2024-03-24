@@ -31,8 +31,8 @@ public class IdeaPostController {
     @GetMapping("/by-author-id/{authorId}")
     public ResponseEntity<?> getPostByAuthorId(@PathVariable("authorId") Long authorId, @RequestParam(name = "page") Integer page, @RequestParam(name = "page_size") Integer pageSize, Principal principal){
         FilterDto filterDto = new FilterDto();
-        filterDto.setSortingFilterId(4);
-        filterDto.setText(null);
+        filterDto.setSortingFilterId(null);
+        filterDto.setText("");
         filterDto.setOfficesId(List.of(1L, 2L, 3L, 4L, 5L));
         List<IdeaPostDto> posts = ideaPostService.getPosts(page, pageSize, filterDto, principal, authorId);
         if(posts == null)

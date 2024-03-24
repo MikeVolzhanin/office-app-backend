@@ -1,7 +1,9 @@
 package com.example.officeappbackend.controllers;
 
+import com.example.officeappbackend.dto.IdeaAuthor;
 import com.example.officeappbackend.dto.OfficeDto;
 import com.example.officeappbackend.dto.UserDto;
+import com.example.officeappbackend.dto.UserInfoForm;
 import com.example.officeappbackend.service.OfficeService;
 import com.example.officeappbackend.service.UserService;
 import lombok.RequiredArgsConstructor;
@@ -20,8 +22,8 @@ public class UserController {
     private final UserService userService;
     private final OfficeService officeService;
     @PatchMapping
-    public ResponseEntity<?> updateUserInfo(@RequestBody UserDto user){
-        return userService.updateUserInfo(user);
+    public ResponseEntity<?> updateUserInfo(@RequestBody UserInfoForm user, Principal principal){
+        return userService.updateUserInfo(user, principal);
     }
     @GetMapping("/offices")
     public List<OfficeDto> getAvailableOffices(){
@@ -29,7 +31,7 @@ public class UserController {
     }
     @GetMapping("/authors/{id}")
     public ResponseEntity<?> getAuthor(@PathVariable("id") Long id){
-        UserDto author = userService.findByAuthorId(id);
+        IdeaAuthor author = userService.findByAuthorId(id);
         if(author == null)
             return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
         return ResponseEntity.ok(author);

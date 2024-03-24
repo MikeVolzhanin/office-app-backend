@@ -13,13 +13,13 @@ public class IdeaPostDto {
     private Long id;
     private String title;
     private String content;
-    private Long userId;
-    private Long officeId;
+    private Date date;
+    private IdeaAuthor ideaAuthor;
     private List<String> attachedImages;
+    private OfficeDto office;
     private Integer likesCount;
     private Boolean isLikePressed;
     private Integer dislikesCount;
     private Boolean isDislikePressed;
     private Integer commentsCount;
-    private Date createdAt;
 }
