@@ -5,7 +5,7 @@
 -- Dumped from database version 16rc1
 -- Dumped by pg_dump version 16.1
 
--- Started on 2024-03-17 12:39:13
+-- Started on 2024-03-24 21:41:59
 
 SET statement_timeout = 0;
 SET lock_timeout = 0;
@@ -23,7 +23,7 @@ SET row_security = off;
 -- Name: office_app_db; Type: DATABASE; Schema: -; Owner: postgres
 --
 
-CREATE DATABASE office_app_db WITH TEMPLATE = template0 ENCODING = 'UTF8';
+CREATE DATABASE office_app_db WITH TEMPLATE = template0 ENCODING = 'UTF8' LOCALE_PROVIDER = libc;
 
 
 ALTER DATABASE office_app_db OWNER TO postgres;
@@ -280,35 +280,6 @@ ALTER TABLE public.users_roles OWNER TO postgres;
 -- Data for Name: dislikes; Type: TABLE DATA; Schema: public; Owner: postgres
 --
 
-INSERT INTO public.dislikes VALUES (3, 2, 7);
-INSERT INTO public.dislikes VALUES (3, 3, 8);
-INSERT INTO public.dislikes VALUES (3, 3, 9);
-INSERT INTO public.dislikes VALUES (3, 3, 10);
-INSERT INTO public.dislikes VALUES (3, 4, 11);
-INSERT INTO public.dislikes VALUES (3, 4, 12);
-INSERT INTO public.dislikes VALUES (3, 5, 13);
-INSERT INTO public.dislikes VALUES (3, 5, 14);
-INSERT INTO public.dislikes VALUES (3, 5, 15);
-INSERT INTO public.dislikes VALUES (3, 5, 16);
-INSERT INTO public.dislikes VALUES (3, 5, 17);
-INSERT INTO public.dislikes VALUES (3, 5, 18);
-INSERT INTO public.dislikes VALUES (3, 6, 19);
-INSERT INTO public.dislikes VALUES (3, 6, 20);
-INSERT INTO public.dislikes VALUES (3, 6, 21);
-INSERT INTO public.dislikes VALUES (3, 6, 22);
-INSERT INTO public.dislikes VALUES (3, 8, 24);
-INSERT INTO public.dislikes VALUES (3, 8, 25);
-INSERT INTO public.dislikes VALUES (3, 8, 26);
-INSERT INTO public.dislikes VALUES (3, 8, 27);
-INSERT INTO public.dislikes VALUES (3, 8, 28);
-INSERT INTO public.dislikes VALUES (3, 8, 29);
-INSERT INTO public.dislikes VALUES (3, 8, 30);
-INSERT INTO public.dislikes VALUES (3, 8, 31);
-INSERT INTO public.dislikes VALUES (3, 9, 32);
-INSERT INTO public.dislikes VALUES (3, 9, 33);
-INSERT INTO public.dislikes VALUES (3, 10, 34);
-INSERT INTO public.dislikes VALUES (3, 12, 35);
-INSERT INTO public.dislikes VALUES (3, 12, 36);
 
 
 --
@@ -317,19 +288,11 @@ INSERT INTO public.dislikes VALUES (3, 12, 36);
 -- Data for Name: idea_post; Type: TABLE DATA; Schema: public; Owner: postgres
 --
 
-INSERT INTO public.idea_post VALUES (10, 'Мониторы #9', 'Необходимо заменить все мониторы! #9', 3, 'https://cdn.thewirecutter.com/wp-content/media/2023/06/4kmonitors-2048px-9794.jpg,https://i.pcmag.com/imagery/reviews/04yXpm5uyjix6ORSzFZVOrA-1..v1693014357.jpg', 7, 1, 0, '2024-03-10 00:19:49.477', 4);
-INSERT INTO public.idea_post VALUES (13, 'Мониторы #12', 'Необходимо заменить все мониторы! #12', 3, 'https://cdn.thewirecutter.com/wp-content/media/2023/06/4kmonitors-2048px-9794.jpg,https://i.pcmag.com/imagery/reviews/04yXpm5uyjix6ORSzFZVOrA-1..v1693014357.jpg', 1, 3, 0, '2024-03-10 00:20:36.723', 5);
-INSERT INTO public.idea_post VALUES (12, 'Мониторы #11', 'Необходимо заменить все мониторы! #11', 3, 'https://cdn.thewirecutter.com/wp-content/media/2023/06/4kmonitors-2048px-9794.jpg,https://i.pcmag.com/imagery/reviews/04yXpm5uyjix6ORSzFZVOrA-1..v1693014357.jpg', 2, 2, 0, '2024-03-10 00:20:28.052', 5);
-INSERT INTO public.idea_post VALUES (5, 'Мониторы #4', 'Необходимо заменить все мониторы! #4', 3, 'https://cdn.thewirecutter.com/wp-content/media/2023/06/4kmonitors-2048px-9794.jpg,https://i.pcmag.com/imagery/reviews/04yXpm5uyjix6ORSzFZVOrA-1..v1693014357.jpg', 3, 6, 0, '2024-03-10 00:17:04.089', 2);
-INSERT INTO public.idea_post VALUES (2, 'Мониторы', 'Необходимо заменить все мониторы!', 3, 'https://cdn.thewirecutter.com/wp-content/media/2023/06/4kmonitors-2048px-9794.jpg,https://i.pcmag.com/imagery/reviews/04yXpm5uyjix6ORSzFZVOrA-1..v1693014357.jpg', 1, 1, 0, '2024-03-05 12:22:46.815', 1);
-INSERT INTO public.idea_post VALUES (15, 'Мониторы #14', 'Необходимо заменить все мониторы! #14', 3, 'https://cdn.thewirecutter.com/wp-content/media/2023/06/4kmonitors-2048px-9794.jpg,https://i.pcmag.com/imagery/reviews/04yXpm5uyjix6ORSzFZVOrA-1..v1693014357.jpg', 0, 0, 0, '2024-03-15 16:55:59.85', 5);
-INSERT INTO public.idea_post VALUES (14, 'Мониторы #13', 'Необходимо заменить все мониторы! #13', 3, 'https://cdn.thewirecutter.com/wp-content/media/2023/06/4kmonitors-2048px-9794.jpg,https://i.pcmag.com/imagery/reviews/04yXpm5uyjix6ORSzFZVOrA-1..v1693014357.jpg', 0, 0, 0, '2024-03-10 00:20:46.752', 5);
-INSERT INTO public.idea_post VALUES (8, 'Мониторы #7', 'Необходимо заменить все мониторы! #7', 3, 'https://cdn.thewirecutter.com/wp-content/media/2023/06/4kmonitors-2048px-9794.jpg,https://i.pcmag.com/imagery/reviews/04yXpm5uyjix6ORSzFZVOrA-1..v1693014357.jpg', 3, 8, 0, '2024-03-10 00:18:43.263', 3);
-INSERT INTO public.idea_post VALUES (3, 'Мониторы #2', 'Необходимо заменить все мониторы! #2', 3, 'https://cdn.thewirecutter.com/wp-content/media/2023/06/4kmonitors-2048px-9794.jpg,https://i.pcmag.com/imagery/reviews/04yXpm5uyjix6ORSzFZVOrA-1..v1693014357.jpg', 2, 3, 0, '2024-03-10 00:16:03.712', 2);
-INSERT INTO public.idea_post VALUES (11, 'Мониторы #10', 'Необходимо заменить все мониторы! #10', 3, 'https://cdn.thewirecutter.com/wp-content/media/2023/06/4kmonitors-2048px-9794.jpg,https://i.pcmag.com/imagery/reviews/04yXpm5uyjix6ORSzFZVOrA-1..v1693014357.jpg', 2, 0, 0, '2024-03-10 00:20:09.248', 4);
-INSERT INTO public.idea_post VALUES (4, 'Мониторы #3', 'Необходимо заменить все мониторы! #3', 3, 'https://cdn.thewirecutter.com/wp-content/media/2023/06/4kmonitors-2048px-9794.jpg,https://i.pcmag.com/imagery/reviews/04yXpm5uyjix6ORSzFZVOrA-1..v1693014357.jpg', 5, 2, 0, '2024-03-10 00:16:30.692', 2);
-INSERT INTO public.idea_post VALUES (9, 'Мониторы #8', 'Необходимо заменить все мониторы! #8', 3, 'https://cdn.thewirecutter.com/wp-content/media/2023/06/4kmonitors-2048px-9794.jpg,https://i.pcmag.com/imagery/reviews/04yXpm5uyjix6ORSzFZVOrA-1..v1693014357.jpg', 1, 2, 0, '2024-03-10 00:19:38.388', 4);
-INSERT INTO public.idea_post VALUES (6, 'Мониторы #5', 'Необходимо заменить все мониторы! #5', 3, 'https://cdn.thewirecutter.com/wp-content/media/2023/06/4kmonitors-2048px-9794.jpg,https://i.pcmag.com/imagery/reviews/04yXpm5uyjix6ORSzFZVOrA-1..v1693014357.jpg', 2, 4, 0, '2024-03-10 00:18:03.347', 3);
+INSERT INTO public.idea_post VALUES (33, 'Мониторы #2', 'Необходимо заменить все мониторы! #2', 18, 'https://cdn.thewirecutter.com/wp-content/media/2023/06/4kmonitors-2048px-9794.jpg,https://i.pcmag.com/imagery/reviews/04yXpm5uyjix6ORSzFZVOrA-1..v1693014357.jpg', 0, 0, 0, '2024-03-23 15:12:16.272', 1);
+INSERT INTO public.idea_post VALUES (34, 'Мониторы #3', 'Необходимо заменить все мониторы! #3', 18, 'https://cdn.thewirecutter.com/wp-content/media/2023/06/4kmonitors-2048px-9794.jpg,https://i.pcmag.com/imagery/reviews/04yXpm5uyjix6ORSzFZVOrA-1..v1693014357.jpg', 0, 0, 0, '2024-03-23 15:12:28.291', 4);
+INSERT INTO public.idea_post VALUES (35, 'Мониторы #4', 'Необходимо заменить все мониторы! #4', 17, 'https://cdn.thewirecutter.com/wp-content/media/2023/06/4kmonitors-2048px-9794.jpg,https://i.pcmag.com/imagery/reviews/04yXpm5uyjix6ORSzFZVOrA-1..v1693014357.jpg', 0, 0, 0, '2024-03-23 15:13:09.091', 2);
+INSERT INTO public.idea_post VALUES (36, 'Мониторы #5', 'Необходимо заменить все мониторы! #5', 17, 'https://cdn.thewirecutter.com/wp-content/media/2023/06/4kmonitors-2048px-9794.jpg,https://i.pcmag.com/imagery/reviews/04yXpm5uyjix6ORSzFZVOrA-1..v1693014357.jpg', 0, 0, 0, '2024-03-23 15:13:16.761', 2);
+INSERT INTO public.idea_post VALUES (37, 'Мониторы #6', 'Необходимо заменить все мониторы! #6', 17, 'https://cdn.thewirecutter.com/wp-content/media/2023/06/4kmonitors-2048px-9794.jpg,https://i.pcmag.com/imagery/reviews/04yXpm5uyjix6ORSzFZVOrA-1..v1693014357.jpg', 0, 0, 0, '2024-03-23 15:13:29.173', 5);
 
 
 --
@@ -338,34 +301,6 @@ INSERT INTO public.idea_post VALUES (6, 'Мониторы #5', 'Необходи
 -- Data for Name: likes; Type: TABLE DATA; Schema: public; Owner: postgres
 --
 
-INSERT INTO public.likes VALUES (3, 2, 13);
-INSERT INTO public.likes VALUES (3, 3, 14);
-INSERT INTO public.likes VALUES (3, 3, 15);
-INSERT INTO public.likes VALUES (3, 4, 16);
-INSERT INTO public.likes VALUES (3, 4, 17);
-INSERT INTO public.likes VALUES (3, 4, 18);
-INSERT INTO public.likes VALUES (3, 4, 19);
-INSERT INTO public.likes VALUES (3, 4, 20);
-INSERT INTO public.likes VALUES (3, 5, 21);
-INSERT INTO public.likes VALUES (3, 5, 22);
-INSERT INTO public.likes VALUES (3, 5, 23);
-INSERT INTO public.likes VALUES (3, 6, 24);
-INSERT INTO public.likes VALUES (3, 6, 25);
-INSERT INTO public.likes VALUES (3, 8, 30);
-INSERT INTO public.likes VALUES (3, 8, 31);
-INSERT INTO public.likes VALUES (3, 8, 32);
-INSERT INTO public.likes VALUES (3, 9, 33);
-INSERT INTO public.likes VALUES (3, 10, 34);
-INSERT INTO public.likes VALUES (3, 10, 35);
-INSERT INTO public.likes VALUES (3, 10, 36);
-INSERT INTO public.likes VALUES (3, 10, 37);
-INSERT INTO public.likes VALUES (3, 10, 38);
-INSERT INTO public.likes VALUES (3, 10, 39);
-INSERT INTO public.likes VALUES (3, 10, 40);
-INSERT INTO public.likes VALUES (3, 11, 41);
-INSERT INTO public.likes VALUES (3, 11, 42);
-INSERT INTO public.likes VALUES (3, 12, 43);
-INSERT INTO public.likes VALUES (3, 12, 44);
 
 
 --
@@ -387,8 +322,11 @@ INSERT INTO public.office VALUES (5, 'https://archello.s3.eu-central-1.amazonaws
 -- Data for Name: refresh_token; Type: TABLE DATA; Schema: public; Owner: postgres
 --
 
-INSERT INTO public.refresh_token VALUES (15, 6, '4879196d-5ab5-401a-82b7-6845ac2fc57b', '2024-03-06 12:19:16.218');
-INSERT INTO public.refresh_token VALUES (35, 3, '3cd61be7-44c5-4cd4-92b3-7724da5059cb', '2024-03-16 17:16:30.046');
+INSERT INTO public.refresh_token VALUES (63, 19, '433cc34b-9f5a-4917-91f4-0969dd47bdfc', '2024-03-24 20:40:48.974');
+INSERT INTO public.refresh_token VALUES (67, 17, '0aa7e256-2448-4a15-b7cc-0710e00437af', '2024-03-25 13:00:58.318');
+INSERT INTO public.refresh_token VALUES (68, 20, '84a47ac8-cce5-40c9-95e6-60c5b96d8bc6', '2024-03-25 13:50:02.137');
+INSERT INTO public.refresh_token VALUES (69, 21, '414e72b3-75ce-46cd-a7ea-7631b8b91e3b', '2024-03-25 21:39:54.965');
+INSERT INTO public.refresh_token VALUES (60, 18, '2c650b21-cb1d-4bea-a159-f4429fa5585e', '2024-03-24 15:06:30.48');
 
 
 --
@@ -398,7 +336,7 @@ INSERT INTO public.refresh_token VALUES (35, 3, '3cd61be7-44c5-4cd4-92b3-7724da5
 --
 
 INSERT INTO public.roles VALUES (1, 'ROLE_USER');
-INSERT INTO public.roles VALUES (3, 'ROLE_ADMIN');
+INSERT INTO public.roles VALUES (2, 'ROLE_ADMIN');
 
 
 --
@@ -407,11 +345,11 @@ INSERT INTO public.roles VALUES (3, 'ROLE_ADMIN');
 -- Data for Name: users; Type: TABLE DATA; Schema: public; Owner: postgres
 --
 
-INSERT INTO public.users VALUES (4, 'petr@yandex.ru', '$2a$10$jef8rYFWTqU81Q29eWS40.ytPa052yqE3RQHTWRmQORLVOrh//5Y.', 'petr', 'petrov', 'Software Engineer', NULL, 1, '2024-02-28 00:13:17.466');
-INSERT INTO public.users VALUES (3, 'misha@yandex.ru', '$2a$10$lmg9UjzmaC897K5G0T2CBec1WMbfRf0JFYF.WvzufhIccN5odsEc6', 'nikita', 'volzhanin', 'Software Engineer', 'http://handsome.ru', 1, '2024-02-20 16:47:06.365');
-INSERT INTO public.users VALUES (6, 'alex@yandex.ru', '$2a$10$j1jV1sYgKDSzdHtWX4KrfO/8PQCo8LZH5goatom7FKEffwv7WNz9q', 'alex', 'kipytok', 'Software Engineer #1', 'http://handsome_2.ru', 1, '2024-03-05 10:17:06.752');
-INSERT INTO public.users VALUES (7, 'alex4@yandex.ru', '$2a$10$5iu0tsLQsxDVs1Q2Xt31BenLzN2Wp3onz1TTdB0JVZCvPumBHG5..', 'alex_4', 'kipytok_4', NULL, NULL, 1, '2024-03-15 16:32:02.505');
-INSERT INTO public.users VALUES (8, 'alex5@yandex.ru', '$2a$10$hNtaiYwuGL9ZqFQGAy/L3.LB5mouShFmM91Z4fQ0xXwta4hemSjEW', 'alex_5', 'kipytok_5', NULL, NULL, 1, '2024-03-17 11:23:17.473');
+INSERT INTO public.users VALUES (17, 'alex@yandex.ru', '$2a$10$O/viSB6hLSgeP4EigHHJzu2oYfu1lYIfDbpn6slCNCM3HQIpBS/02', 'person_first', 'person_first', 'Software Engineer #1', 'https://previews.123rf.com/images/verpeya/verpeya1902/verpeya190202090/129973840-user-icon.jpg', 1, '2024-03-23 15:05:49.815');
+INSERT INTO public.users VALUES (19, 'qwerty@yandex.ru', '$2a$10$3W7C2KmqVr/0ZvjW3Zgc1Ozs/PCWCXaxFlPT6VhHTKVrbfI9jiYsi', 'Дмитрий', 'Комарницкий', 'Сотрудник Tinkoff', 'https://previews.123rf.com/images/verpeya/verpeya1902/verpeya190202090/129973840-user-icon.jpg', 1, '2024-03-23 20:40:48.404');
+INSERT INTO public.users VALUES (20, 'qwerty123456@yandex.ru', '$2a$10$XIQ1Yxrh0oK1H7dfAKLhOOwxM10FWevQ91oQXI3SVGHtaSS1q0Tvy', 'Дмитрий', 'Комарницкий', 'Сотрудник Tinkoff', 'https://previews.123rf.com/images/verpeya/verpeya1902/verpeya190202090/129973840-user-icon.jpg', 1, '2024-03-24 13:50:01.581');
+INSERT INTO public.users VALUES (18, 'misha@yandex.ru', '$2a$10$zRQoNFPBZPD/DTjWH0Qx7.u0/jyn.jyPpR6y0KVvdLRNFImVhfkyq', 'misha', 'volzhanin', 'Сотрудник Tinkoff', 'https://previews.123rf.com/images/verpeya/verpeya1902/verpeya190202090/129973840-user-icon.jpg', 1, '2024-03-23 15:06:16.65');
+INSERT INTO public.users VALUES (21, 'qwerty1234567@yandex.ru', '$2a$10$Lf42VW7ysy9xKhOaqB6IDOund0xmfro0MK0mb3VI.29CfW7W9/5su', 'Дмитрий', 'Комарницкий', 'Сотрудник Tinkoff', 'https://previews.123rf.com/images/verpeya/verpeya1902/verpeya190202090/129973840-user-icon.jpg', 1, '2024-03-24 21:39:54.386');
 
 
 --
@@ -420,11 +358,11 @@ INSERT INTO public.users VALUES (8, 'alex5@yandex.ru', '$2a$10$hNtaiYwuGL9ZqFQGA
 -- Data for Name: users_roles; Type: TABLE DATA; Schema: public; Owner: postgres
 --
 
-INSERT INTO public.users_roles VALUES (3, 1);
-INSERT INTO public.users_roles VALUES (4, 1);
-INSERT INTO public.users_roles VALUES (6, 1);
-INSERT INTO public.users_roles VALUES (7, 1);
-INSERT INTO public.users_roles VALUES (8, 1);
+INSERT INTO public.users_roles VALUES (17, 1);
+INSERT INTO public.users_roles VALUES (18, 1);
+INSERT INTO public.users_roles VALUES (19, 1);
+INSERT INTO public.users_roles VALUES (20, 1);
+INSERT INTO public.users_roles VALUES (21, 1);
 
 
 --
@@ -433,7 +371,7 @@ INSERT INTO public.users_roles VALUES (8, 1);
 -- Name: dislikes_id_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
 --
 
-SELECT pg_catalog.setval('public.dislikes_id_seq', 40, true);
+SELECT pg_catalog.setval('public.dislikes_id_seq', 42, true);
 
 
 --
@@ -442,7 +380,7 @@ SELECT pg_catalog.setval('public.dislikes_id_seq', 40, true);
 -- Name: idea_post_id_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
 --
 
-SELECT pg_catalog.setval('public.idea_post_id_seq', 15, true);
+SELECT pg_catalog.setval('public.idea_post_id_seq', 37, true);
 
 
 --
@@ -451,7 +389,7 @@ SELECT pg_catalog.setval('public.idea_post_id_seq', 15, true);
 -- Name: likes_id_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
 --
 
-SELECT pg_catalog.setval('public.likes_id_seq', 46, true);
+SELECT pg_catalog.setval('public.likes_id_seq', 52, true);
 
 
 --
@@ -469,7 +407,7 @@ SELECT pg_catalog.setval('public.office_id_seq', 5, true);
 -- Name: refresh_token_id_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
 --
 
-SELECT pg_catalog.setval('public.refresh_token_id_seq', 35, true);
+SELECT pg_catalog.setval('public.refresh_token_id_seq', 69, true);
 
 
 --
@@ -487,7 +425,7 @@ SELECT pg_catalog.setval('public.roles_id_seq', 3, true);
 -- Name: users_id_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
 --
 
-SELECT pg_catalog.setval('public.users_id_seq', 8, true);
+SELECT pg_catalog.setval('public.users_id_seq', 21, true);
 
 
 --
@@ -670,7 +608,7 @@ ALTER TABLE ONLY public.users_roles
     ADD CONSTRAINT users_roles_user_id_fkey FOREIGN KEY (user_id) REFERENCES public.users(id);
 
 
--- Completed on 2024-03-17 12:39:13
+-- Completed on 2024-03-24 21:42:00
 
 --
 -- PostgreSQL database dump complete

@@ -2,24 +2,24 @@ version: "3.8"
 
 services:
   psql-db:
-    container_name: psql-db
+    container_name: db
+    build:
+      context: .
+      dockerfile: ./devops/db/Dockerfile
     restart: always
     environment:
       - POSTGRES_USER=postgres
       - POSTGRES_PASSWORD=89194161213
-    build:
-      context: .
-      dockerfile: ./devops/db/Dockerfile
     ports:
       - '5432:5432'
 
   backend:
-    container_name: backend-app-cont
+    container_name: app-cont
     build:
       context: .
-      dockerfile: Dockerfile
+      dockerfile: ./Dockerfile
     ports:
-      - '8081:8189'
+      - '8189:8189'
     environment:
       - SPRING_DATASOURCE_URL=jdbc:postgresql://psql-db:5432/office_app_db
       - SPRING_DATASOURCE_USERNAME=postgres

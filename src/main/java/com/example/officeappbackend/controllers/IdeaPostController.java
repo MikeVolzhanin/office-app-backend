@@ -9,6 +9,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.security.Principal;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
@@ -36,7 +37,7 @@ public class IdeaPostController {
         filterDto.setOfficesId(List.of(1L, 2L, 3L, 4L, 5L));
         List<IdeaPostDto> posts = ideaPostService.getPosts(page, pageSize, filterDto, principal, authorId);
         if(posts == null)
-            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+            return ResponseEntity.ok(new ArrayList<>());
         return ResponseEntity.ok(posts);
     }
 
@@ -99,7 +100,7 @@ public class IdeaPostController {
         filterDto.setSortingFilterId(sortingFilter);    
         filterDto.setText(text);
         if(ideaPostService.getPosts(page, pageSize, filterDto, principal, null) == null)
-            return new ResponseEntity<>(new AppError(HttpStatus.BAD_REQUEST.value(), "The number of pages less than required", new Date()), HttpStatus.BAD_REQUEST);
+            return new ResponseEntity<>(new ArrayList<>(), HttpStatus.OK);
         List<IdeaPostDto> resultPosts = ideaPostService.getPosts(page, pageSize, filterDto, principal, null);
         return ResponseEntity.ok(resultPosts);
     }

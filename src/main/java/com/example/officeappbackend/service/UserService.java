@@ -49,6 +49,8 @@ public class UserService implements UserDetailsService {
 
     public User createNewUser(RegistrationUserDto registrationUserDto){
         User user = new User();
+
+        String defaultPhoto = "https://previews.123rf.com/images/verpeya/verpeya1902/verpeya190202090/129973840-user-icon.jpg";
         user.setSurname(registrationUserDto.getUserInfo().getSurname());
         user.setName(registrationUserDto.getUserInfo().getName());
         user.setEmail(registrationUserDto.getEmail());
@@ -56,7 +58,11 @@ public class UserService implements UserDetailsService {
 
         user.setJob(registrationUserDto.getUserInfo().getJob());
         user.setCreatedAt(new Date());
-        // Нужно задавать из вне информация про офис
+        if(registrationUserDto.getUserInfo().getPhoto() == null)
+            user.setPhoto(defaultPhoto);
+        else
+            user.setPhoto(registrationUserDto.getUserInfo().getPhoto());
+
         user.setOffice(officeService.findById(registrationUserDto.getUserInfo().getOffice()).orElse(null));
         user.setRoles(List.of(roleService.getUserRole()));
 
@@ -100,6 +106,7 @@ public class UserService implements UserDetailsService {
         ideaAuthor.setId(user.getId());
         ideaAuthor.setName(user.getName());
         ideaAuthor.setSurname(user.getSurname());
+        ideaAuthor.setPhoto(user.getPhoto());
         ideaAuthor.setOffice(officeService.convertToOfficeDto(user.getOffice()));
         ideaAuthor.setJob(user.getJob());
         ideaAuthor.setJob(user.getJob());
