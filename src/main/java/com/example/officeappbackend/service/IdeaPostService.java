@@ -35,12 +35,12 @@ public class IdeaPostService {
     @Transactional
     public void publishPost(PublishPostDto post, Principal principal){
         IdeaPost ideaPost = new IdeaPost();
-        User user = userService.findByEmail(principal.getName()).get();
+        User user = userService.findByEmail(principal.getName()).orElse(null);
 
         ideaPost.setTitle(post.getTitle());
         ideaPost.setUserId(user);
         ideaPost.setContent(post.getContent());
-        ideaPost.setOfficeId(userService.findByEmail(principal.getName()).get().getOffice());
+        ideaPost.setOfficeId(Objects.requireNonNull(userService.findByEmail(principal.getName()).orElse(null)).getOffice());
         ideaPost.setAttachedImages(convertUrlListToString(post.getAttachedImages()));
 
         ideaPost.setLikesCount(0);
@@ -53,28 +53,43 @@ public class IdeaPostService {
     }
 
     @Transactional
-    public void updatePost(Long id, EditPostDto post){
-        IdeaPost currentPost = ideaPostRepository.findById(id).get();
+    public ResponseEntity<?> updatePost(Long id, EditPostDto post){
+        IdeaPost currentPost = ideaPostRepository.findById(id).orElse(null);
+        if(currentPost == null)
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+
         currentPost.setTitle(post.getTitle());
         currentPost.setContent(post.getContent());
         currentPost.setAttachedImages(convertUrlListToString(post.getAttachedImages()));
 
         ideaPostRepository.save(currentPost);
+        return ResponseEntity.ok(new Success(
+                "Post was changed successfully",
+                new Date())
+        );
     }
 
     @Transactional
-    public void deletePost(Long id){
-        IdeaPost currentPost = ideaPostRepository.findById(id).get();
+    public ResponseEntity<?> deletePost(Long id){
+        IdeaPost currentPost = ideaPostRepository.findById(id).orElse(null);
+        if(currentPost == null)
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+
         likesRepository.deleteByPostId(currentPost);
         dislikesRepository.deleteByPostId(currentPost);
         ideaPostRepository.deleteById(id);
+        return ResponseEntity.ok(new Success("The post was deleted successfully",
+                new Date()
+        ));
     }
 
-    // Перед тем как ставить лайк, необходимо проверить, может быть он уже стоит и нет необходимости снова его ставить
     @Transactional
     public ResponseEntity<?> likePost(Long id, Principal principal){
-        IdeaPost post = ideaPostRepository.findById(id).get();
-        User user = userService.findByEmail(principal.getName()).get();
+        IdeaPost post = ideaPostRepository.findById(id).orElse(null);
+        User user = userService.findByEmail(principal.getName()).orElse(null);
+
+        if(post == null)
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
 
         if(likesRepository.findByUserIdAndPostId(user, post).isPresent())
             return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
@@ -97,11 +112,13 @@ public class IdeaPostService {
         ));
     }
 
-    // Проверка на повтор + не увеличивается кол-во в бд поста
     @Transactional
     public ResponseEntity<?> dislikePost(Long id, Principal principal){
-        IdeaPost post = ideaPostRepository.findById(id).get();
-        User user = userService.findByEmail(principal.getName()).get();
+        IdeaPost post = ideaPostRepository.findById(id).orElse(null);
+        User user = userService.findByEmail(principal.getName()).orElse(null);
+
+        if(post == null)
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
 
         if(dislikesRepository.findByUserIdAndPostId(user, post).isPresent())
             return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
@@ -126,26 +143,37 @@ public class IdeaPostService {
     }
 
     @Transactional
-    public void unlikePost(Long id, Principal principal){
-        IdeaPost post = ideaPostRepository.findById(id).get();
-        User user = userService.findByEmail(principal.getName()).get();
+    public ResponseEntity<?> unlikePost(Long id, Principal principal){
+        IdeaPost post = ideaPostRepository.findById(id).orElse(null);
+        if(post == null)
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        User user = userService.findByEmail(principal.getName()).orElse(null);
         likesRepository.deleteByUserIdAndPostId(user, post);
         Integer likeCount = post.getLikesCount();
         post.setLikesCount(--likeCount);
         ideaPostRepository.save(post);
+        return ResponseEntity.ok(new Success("Like was removed successfully",
+                new Date()
+        ));
     }
 
     @Transactional
-    public void undislikePost(Long id, Principal principal){
-        IdeaPost post = ideaPostRepository.findById(id).get();
-        User user = userService.findByEmail(principal.getName()).get();
+    public ResponseEntity<?> undislikePost(Long id, Principal principal){
+        IdeaPost post = ideaPostRepository.findById(id).orElse(null);
+        if(post == null)
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+
+        User user = userService.findByEmail(principal.getName()).orElse(null);
         Integer dislikeCount = post.getDislikesCount();
         post.setDislikesCount(--dislikeCount);
         dislikesRepository.deleteByUserIdAndPostId(user, post);
         ideaPostRepository.save(post);
+
+        return ResponseEntity.ok(new Success("Dislike was removed successfully",
+                new Date()
+        ));
     }
 
-    // Обработать ошибки
     public List<IdeaPostDto> getPosts(Integer page, Integer pageSize, FilterDto filterDto, Principal principal, Long authorId){
         Map<Integer, String> filters = getFiltersMap();
         Integer sortingFilterId = filterDto.getSortingFilterId();
@@ -160,7 +188,7 @@ public class IdeaPostService {
         List<IdeaPostDto> posts = new ArrayList<>();
 
         for(Long id : offices){
-            List<IdeaPost> list = ideaPostRepository.findByOfficeId(officeService.findById(id).get());
+            List<IdeaPost> list = ideaPostRepository.findByOfficeId(officeService.findById(id).orElse(null));
             if(!filterDto.getText().isEmpty()){
                 for(IdeaPost post : list) {
                     if(post.getTitle().contains(filterDto.getText()))
@@ -181,15 +209,15 @@ public class IdeaPostService {
         }
 
         if(filterName.equals("by comments")) {
-            Collections.sort(posts, Comparator.comparingInt(IdeaPostDto::getCommentsCount).reversed());
+            posts.sort(Comparator.comparingInt(IdeaPostDto::getCommentsCount).reversed());
         }
 
         if(filterName.equals("by likes")){
-            Collections.sort(posts, Comparator.comparingInt(IdeaPostDto::getLikesCount).reversed());
+            posts.sort(Comparator.comparingInt(IdeaPostDto::getLikesCount).reversed());
         }
 
         if(filterName.equals("by dislikes")){
-            Collections.sort(posts, Comparator.comparingInt(IdeaPostDto::getDislikesCount).reversed());
+            posts.sort(Comparator.comparingInt(IdeaPostDto::getDislikesCount).reversed());
         }
 
         int items = posts.size();
@@ -229,7 +257,6 @@ public class IdeaPostService {
         return post.map(ideaPost -> convertToIdeaPostDto(ideaPost, principal)).orElse(null);
     }
 
-    // дописать проверку like'ов
     public IdeaPostDto convertToIdeaPostDto(IdeaPost ideaPost, Principal principal) {
 
         IdeaPostDto post = new IdeaPostDto();
@@ -242,10 +269,10 @@ public class IdeaPostService {
         post.setAttachedImages(convertStringToUrlList(ideaPost.getAttachedImages()));
 
         post.setLikesCount(ideaPost.getLikesCount());
-        post.setIsLikePressed(likesRepository.findByUserIdAndPostId(userService.findByEmail(principal.getName()).get(), ideaPost).isPresent());
+        post.setIsLikePressed(likesRepository.findByUserIdAndPostId(userService.findByEmail(principal.getName()).orElse(null), ideaPost).isPresent());
 
         post.setDislikesCount(ideaPost.getDislikesCount());
-        post.setIsDislikePressed(dislikesRepository.findByUserIdAndPostId(userService.findByEmail(principal.getName()).get(), ideaPost).isPresent());
+        post.setIsDislikePressed(dislikesRepository.findByUserIdAndPostId(userService.findByEmail(principal.getName()).orElse(null), ideaPost).isPresent());
 
         post.setCommentsCount(ideaPost.getCommentsCount());
         post.setDate(ideaPost.getCreatedAt());
@@ -257,6 +284,8 @@ public class IdeaPostService {
         return String.join(",", list);
     }
     public List<String> convertStringToUrlList(String links){
+        if(links.isEmpty())
+            return new ArrayList<>();
         return List.of(links.split(","));
     }
 }

@@ -44,26 +44,19 @@ public class IdeaPostController {
     @GetMapping("/{id}")
     public ResponseEntity<?> getPostById(@PathVariable Long id, Principal principal){
         if(ideaPostService.findPostById(id, principal) == null){
-            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
         return ResponseEntity.ok(ideaPostService.findPostById(id, principal));
     }
 
     @PatchMapping("/{id}")
     public ResponseEntity<?> editPost(@PathVariable("id") Long id, @RequestBody EditPostDto post){
-        ideaPostService.updatePost(id, post);
-        return ResponseEntity.ok(new Success(
-                "Post was changed successfully",
-                new Date())
-        );
+        return ideaPostService.updatePost(id, post);
     }
 
     @DeleteMapping("/{id}")
     public ResponseEntity<?> deletePost(@PathVariable("id") Long id){
-        ideaPostService.deletePost(id);
-        return ResponseEntity.ok(new Success("The post was deleted successfully",
-                new Date()
-        ));
+        return ideaPostService.deletePost(id);
     }
 
     @PostMapping("{id}/like")
@@ -73,10 +66,7 @@ public class IdeaPostController {
 
     @DeleteMapping("{id}/like")
     public ResponseEntity<?> unlikePost(@PathVariable("id") Long id, Principal principal){
-        ideaPostService.unlikePost(id, principal);
-        return  ResponseEntity.ok(new Success("Like was removed successfully",
-                new Date()
-        ));
+        return ideaPostService.unlikePost(id, principal);
     }
 
     @PostMapping("{id}/dislike")
@@ -86,10 +76,7 @@ public class IdeaPostController {
 
     @DeleteMapping("{id}/dislike")
     public ResponseEntity<?> undislikePost(@PathVariable("id") Long id, Principal principal){
-        ideaPostService.undislikePost(id, principal);
-        return ResponseEntity.ok(new Success("Dislike was removed successfully",
-                new Date()
-        ));
+        return ideaPostService.undislikePost(id, principal);
     }
 
     @GetMapping

@@ -33,7 +33,7 @@ public class UserController {
     public ResponseEntity<?> getAuthor(@PathVariable("id") Long id){
         IdeaAuthor author = userService.findByAuthorId(id);
         if(author == null)
-            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         return ResponseEntity.ok(author);
     }
 }
