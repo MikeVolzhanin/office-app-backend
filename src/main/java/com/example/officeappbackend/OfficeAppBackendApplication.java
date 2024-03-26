@@ -8,7 +8,6 @@ import org.springframework.web.filter.HiddenHttpMethodFilter;
 
 @SpringBootApplication
 public class OfficeAppBackendApplication {
-
 	public static void main(String[] args) {
 		SpringApplication.run(OfficeAppBackendApplication.class, args);
 	}

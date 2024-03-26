@@ -1,7 +1,6 @@
 package com.example.officeappbackend.controllers;
 
 import com.example.officeappbackend.dto.*;
-import com.example.officeappbackend.exceptions.AppError;
 import com.example.officeappbackend.service.IdeaPostService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -10,7 +9,6 @@ import org.springframework.web.bind.annotation.*;
 
 import java.security.Principal;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
 
