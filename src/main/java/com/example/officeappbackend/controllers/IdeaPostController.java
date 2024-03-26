@@ -20,7 +20,7 @@ import java.util.List;
 public class IdeaPostController {
     private final IdeaPostService ideaPostService;
 
-    @PostMapping("/publish")
+    @PostMapping
     public ResponseEntity<?> publishPost(@RequestBody PublishPostDto post, Principal principal){
         ideaPostService.publishPost(post, principal);
         return ResponseEntity.ok(new Success(

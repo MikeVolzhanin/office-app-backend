@@ -41,10 +41,8 @@ public class AuthController {
         return authService.emailValidation(email);
     }
     @PostMapping("/refresh-token")
-    public ResponseEntity<?> refreshToken(@Valid @RequestBody TokenRefreshRequest request) {
-        String requestRefreshToken = request.getRefreshToken();
-
-        return refreshTokenService.findByToken(requestRefreshToken)
+    public ResponseEntity<?> refreshToken(@Valid @RequestBody String request) {
+        return refreshTokenService.findByToken(request)
                 .map(refreshTokenService::verifyExpiration)
                 .map(RefreshToken::getUser)
                 .map(user -> {
@@ -53,7 +51,7 @@ public class AuthController {
                     );
                     return ResponseEntity.ok(new TokenRefreshResponse(token, refreshTokenService.createRefreshToken(user.getId()).getToken()));
                 })
-                .orElseThrow(() -> new TokenRefreshException(requestRefreshToken,
+                .orElseThrow(() -> new TokenRefreshException(request,
                         "Refresh token is not in database!"));
     }
 }

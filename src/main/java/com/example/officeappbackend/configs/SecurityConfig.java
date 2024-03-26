@@ -47,6 +47,7 @@ public class SecurityConfig {
                         .requestMatchers("/auth/login", "/auth/register", "/auth/refresh-token", "/auth/email-valid", "users/offices").permitAll()
                         .requestMatchers( "/users/**", "/posts/**", "/auth/user-info").authenticated()
                         .requestMatchers("/admin").hasRole("ADMIN")
+                        .anyRequest().permitAll()
                 )
                 .sessionManagement(sess -> sess.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .exceptionHandling(e -> e.authenticationEntryPoint(new HttpStatusEntryPoint(HttpStatus.UNAUTHORIZED)))

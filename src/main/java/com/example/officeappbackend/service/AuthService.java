@@ -55,11 +55,9 @@ public class AuthService {
     }
 
     public ResponseEntity<?> emailValidation(String email){
-        if(userService.findByEmail(email).isPresent()){
-            return new ResponseEntity<>(HttpStatus.OK);
-        }
-        else{
+        if(userService.findByEmail(email).isEmpty()){
             return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
         }
+        return new ResponseEntity<>(HttpStatus.OK);
     }
 }

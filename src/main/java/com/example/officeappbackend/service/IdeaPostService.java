@@ -40,7 +40,7 @@ public class IdeaPostService {
         ideaPost.setTitle(post.getTitle());
         ideaPost.setUserId(user);
         ideaPost.setContent(post.getContent());
-        ideaPost.setOfficeId(officeService.findById(post.getOffice()).get());
+        ideaPost.setOfficeId(userService.findByEmail(principal.getName()).get().getOffice());
         ideaPost.setAttachedImages(convertUrlListToString(post.getAttachedImages()));
 
         ideaPost.setLikesCount(0);
@@ -79,6 +79,9 @@ public class IdeaPostService {
         if(likesRepository.findByUserIdAndPostId(user, post).isPresent())
             return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
 
+        if(dislikesRepository.findByUserIdAndPostId(user, post).isPresent())
+            undislikePost(id, principal);
+
         Integer likes = post.getLikesCount();
         post.setLikesCount(++likes);
 
@@ -102,6 +105,9 @@ public class IdeaPostService {
 
         if(dislikesRepository.findByUserIdAndPostId(user, post).isPresent())
             return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+
+        if(likesRepository.findByUserIdAndPostId(user, post).isPresent())
+            unlikePost(id, principal);
 
         Integer dislike = post.getDislikesCount();
 
@@ -175,15 +181,15 @@ public class IdeaPostService {
         }
 
         if(filterName.equals("by comments")) {
-            Collections.sort(posts, Comparator.comparingInt(IdeaPostDto::getCommentsCount));
+            Collections.sort(posts, Comparator.comparingInt(IdeaPostDto::getCommentsCount).reversed());
         }
 
         if(filterName.equals("by likes")){
-            Collections.sort(posts, Comparator.comparingInt(IdeaPostDto::getLikesCount));
+            Collections.sort(posts, Comparator.comparingInt(IdeaPostDto::getLikesCount).reversed());
         }
 
         if(filterName.equals("by dislikes")){
-            Collections.sort(posts, Comparator.comparingInt(IdeaPostDto::getDislikesCount));
+            Collections.sort(posts, Comparator.comparingInt(IdeaPostDto::getDislikesCount).reversed());
         }
 
         int items = posts.size();
