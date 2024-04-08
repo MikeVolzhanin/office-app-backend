@@ -90,6 +90,8 @@ public class IdeaPostController {
         return ResponseEntity.ok(resultPosts);
     }
 
+
+
     @GetMapping("/filters")
     public ResponseEntity<?> showFilters(){
         Filters filters = ideaPostService.getFilters();

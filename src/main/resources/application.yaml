@@ -8,7 +8,7 @@ jwt:
   lifetime: 30m
 
 refresh-token:
-  duration: 1440m
+  duration: 10080m
 
 spring:
   datasource:

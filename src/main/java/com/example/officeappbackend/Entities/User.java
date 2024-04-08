@@ -60,5 +60,8 @@ public class User {
 
     @OneToOne(mappedBy = "user")
     private RefreshToken refreshToken;
+
+    @OneToMany(mappedBy = "author")
+    private List<Comment> comments;
 }
 
