@@ -3,13 +3,10 @@ package com.example.officeappbackend.Entities;
 import jakarta.persistence.*;
 import lombok.Data;
 
-import java.util.Date;
-import java.util.List;
-
-@Entity
-@Table(name = "comment")
 @Data
-public class Comment {
+@Entity
+@Table(name = "comment_dislikes")
+public class CommentDislikes {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id")
@@ -19,12 +16,7 @@ public class Comment {
     @JoinColumn(name = "author", referencedColumnName = "id")
     private User author;
 
-    @Column(name = "content")
-    private String content;
-
-    @Column(name = "date")
-    private Date date;
-
-    @OneToMany(mappedBy = "comment")
-    private List<CommentDislikes> commentDislikes;
+    @ManyToOne
+    @JoinColumn(name = "comment", referencedColumnName = "id")
+    private Comment comment;
 }

@@ -63,5 +63,8 @@ public class User {
 
     @OneToMany(mappedBy = "author")
     private List<Comment> comments;
+
+    @OneToMany(mappedBy = "author")
+    private List<CommentDislikes> commentDislikes;
 }
 
