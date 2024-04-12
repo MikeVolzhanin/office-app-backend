@@ -96,6 +96,26 @@ public class IdeaPostController {
         return commentService.publishComment(id, commentDto, principal);
     }
 
+    @PostMapping("/{id}/comments/{commentsId}/like")
+    public ResponseEntity<?> likeComment(@PathVariable("id") Long PostId, @PathVariable("commentsId") Long CommentsId, Principal principal){
+        return commentService.likeOrDislikeComment(PostId, CommentsId, principal, "like");
+    }
+
+    @DeleteMapping("/{id}/comments/{commentsId}/like")
+    public ResponseEntity<?> unlikeComment(@PathVariable("id") Long PostId, @PathVariable("commentsId") Long CommentsId, Principal principal){
+        return commentService.unlikeOrUndislikeComment(PostId, CommentsId, principal, "unlike");
+    }
+
+    @PostMapping("/{id}/comments/{commentsId}/like")
+    public ResponseEntity<?> dislikeComment(@PathVariable("id") Long PostId, @PathVariable("commentsId") Long CommentsId, Principal principal){
+        return commentService.likeOrDislikeComment(PostId, CommentsId, principal, "dislike");
+    }
+
+    @DeleteMapping("/{id}/comments/{commentsId}/like")
+    public ResponseEntity<?> undislikeComment(@PathVariable("id") Long PostId, @PathVariable("commentsId") Long CommentsId, Principal principal) {
+        return commentService.unlikeOrUndislikeComment(PostId, CommentsId, principal, "undislike");
+    }
+
     @GetMapping("/filters")
     public ResponseEntity<?> showFilters(){
         Filters filters = ideaPostService.getFilters();
