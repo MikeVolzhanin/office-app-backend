@@ -6,6 +6,6 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import java.util.Optional;
 
 public interface CommentDislikesRepository extends JpaRepository<CommentDislikes, Long> {
-    Optional<CommentLikes> findByAuthorAndComment(User author, Comment comment);
+    Optional<CommentDislikes> findByAuthorAndComment(User author, Comment comment);
     void deleteByAuthorAndComment(User author, Comment comment);
 }

@@ -13,10 +13,10 @@ public class CommentDislikes {
     private Long Id;
 
     @ManyToOne
-    @JoinColumn(name = "author", referencedColumnName = "id")
+    @JoinColumn(name = "author_id", referencedColumnName = "id")
     private User author;
 
     @ManyToOne
-    @JoinColumn(name = "comment", referencedColumnName = "id")
+    @JoinColumn(name = "comment_id", referencedColumnName = "id")
     private Comment comment;
 }
