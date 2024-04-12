@@ -1,7 +1,11 @@
 package com.example.officeappbackend.repositories;
 
-import com.example.officeappbackend.Entities.CommentDislikes;
+import com.example.officeappbackend.Entities.*;
 import org.springframework.data.jpa.repository.JpaRepository;
 
-public interface CommentDislikesRepository extends JpaRepository<Long, CommentDislikes> {
+import java.util.Optional;
+
+public interface CommentDislikesRepository extends JpaRepository<CommentDislikes, Long> {
+    Optional<CommentLikes> findByAuthorAndComment(User author, Comment comment);
+    void deleteByAuthorAndComment(User author, Comment comment);
 }

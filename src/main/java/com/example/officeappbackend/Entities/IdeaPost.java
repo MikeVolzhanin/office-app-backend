@@ -49,4 +49,7 @@ public class IdeaPost {
 
     @OneToMany(mappedBy = "postId")
     private List<Dislikes> dislikes;
+
+    @OneToMany(mappedBy = "ideaPost")
+    private List<Comment> comments;
 }

@@ -19,12 +19,25 @@ public class Comment {
     @JoinColumn(name = "author", referencedColumnName = "id")
     private User author;
 
+    @ManyToOne
+    @JoinColumn(name = "post_id", referencedColumnName = "id")
+    private IdeaPost ideaPost;
+
     @Column(name = "content")
     private String content;
+
+    @Column(name = "attached_image")
+    private String attachedImage;
 
     @Column(name = "date")
     private Date date;
 
     @OneToMany(mappedBy = "comment")
     private List<CommentDislikes> commentDislikes;
+
+    @Column(name = "likes_count")
+    private Integer likesCount;
+
+    @Column(name = "dislikes_count")
+    private Integer dislikesCount;
 }

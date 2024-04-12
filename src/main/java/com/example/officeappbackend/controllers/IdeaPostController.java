@@ -1,6 +1,7 @@
 package com.example.officeappbackend.controllers;
 
 import com.example.officeappbackend.dto.*;
+import com.example.officeappbackend.service.CommentService;
 import com.example.officeappbackend.service.IdeaPostService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -17,7 +18,7 @@ import java.util.List;
 @RequestMapping("/posts")
 public class IdeaPostController {
     private final IdeaPostService ideaPostService;
-
+    private final CommentService commentService;
     @PostMapping
     public ResponseEntity<?> publishPost(@RequestBody PublishPostDto post, Principal principal){
         ideaPostService.publishPost(post, principal);
@@ -90,7 +91,10 @@ public class IdeaPostController {
         return ResponseEntity.ok(resultPosts);
     }
 
-
+    @PostMapping("/{id}/comments")
+    public ResponseEntity<?> publishComment(@PathVariable Long id, @RequestBody CommentDto commentDto, Principal principal){
+        return commentService.publishComment(id, commentDto, principal);
+    }
 
     @GetMapping("/filters")
     public ResponseEntity<?> showFilters(){
