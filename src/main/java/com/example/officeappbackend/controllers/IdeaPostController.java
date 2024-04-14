@@ -90,6 +90,19 @@ public class IdeaPostController {
         List<IdeaPostDto> resultPosts = ideaPostService.getPosts(page, pageSize, filterDto, principal, null, null);
         return ResponseEntity.ok(resultPosts);
     }
+    @GetMapping("/favourite")
+    ResponseEntity<?> showFavouritePosts(@RequestParam(name="office") Long[] office, @RequestParam(name = "search", required = false) String text, @RequestParam(name="sorting_filter", required = false) Integer sortingFilter,
+                                                     @RequestParam(name = "page") Integer page, @RequestParam(name = "page_size") Integer pageSize, Principal principal){
+        FilterDto filterDto = new FilterDto();
+        filterDto.setOfficesId(List.of(office));
+        filterDto.setSortingFilterId(sortingFilter);
+        filterDto.setText(text);
+        List<IdeaPostDto> resultPosts = ideaPostService.showFavouritePosts(page, pageSize, filterDto, principal);
+        if(resultPosts == null){
+           return new ResponseEntity<>(new ArrayList<>(), HttpStatus.OK);
+       }
+        return ResponseEntity.ok(resultPosts);
+    }
 
     @PostMapping("/{id}/comments")
     public ResponseEntity<?> publishComment(@PathVariable Long id, @RequestBody CommentDto commentDto, Principal principal){

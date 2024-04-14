@@ -157,7 +157,6 @@ public class CommentService {
 
         return ResponseEntity.ok(comments.subList(fromInd, toInd));
     }
-
     public ResponseCommentDto convertToResComDto(Comment comment, Principal principal){
         ResponseCommentDto responseCommentDto = new ResponseCommentDto();
         User author = userRepository.findByEmail(principal.getName()).orElse(null);

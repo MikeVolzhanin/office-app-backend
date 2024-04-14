@@ -12,6 +12,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.security.Principal;
+import java.time.LocalDateTime;
 import java.util.*;
 import java.util.stream.Collectors;
 
@@ -189,6 +190,7 @@ public class IdeaPostService {
 
         for(Long id : offices){
             List<IdeaPost> list = ideaPostRepository.findByOfficeId(officeService.findById(id).orElse(null));
+
             if(!filterDto.getText().isEmpty()){
                 for(IdeaPost post : list) {
                     if(post.getTitle().contains(filterDto.getText()))
@@ -208,22 +210,50 @@ public class IdeaPostService {
             }
         }
 
-        if(filterName.equals("by comments")) {
-            posts.sort(Comparator.comparingInt(IdeaPostDto::getCommentsCount).reversed());
+        return showPostsByContract(posts, filterName, page, pageSize);
+    }
+
+    public List<IdeaPostDto> showFavouritePosts(Integer page, Integer pageSize, FilterDto filterDto, Principal principal){
+        //заменить на enum
+        Map<Integer, String> filters = getFiltersMap();
+        Integer sortingFilterId = filterDto.getSortingFilterId();
+        String filterName;
+        if(sortingFilterId == null)
+            filterName = "nothing";
+        else {
+            filterName = filters.get(sortingFilterId);
         }
 
-        if(filterName.equals("by likes")){
-            posts.sort(Comparator.comparingInt(IdeaPostDto::getLikesCount).reversed());
+        List<Long> offices = filterDto.getOfficesId();
+        User user = userService.findByEmail(principal.getName()).orElse(null);
+        List<IdeaPostDto> posts = new ArrayList<>();
+        List<Likes> likedPosts = user.getLikes();
+        List<IdeaPost> ideaPosts = new ArrayList<>();
+
+        for(Likes like : likedPosts)
+            ideaPosts.add(like.getPostId());
+
+        for(IdeaPost post : ideaPosts){
+            for(Long id : offices){
+                if(Objects.equals(post.getOfficeId().getId(), id))
+                    posts.add(convertToIdeaPostDto(post, principal));
+            }
+
         }
 
-        if(filterName.equals("by dislikes")){
-            posts.sort(Comparator.comparingInt(IdeaPostDto::getDislikesCount).reversed());
+        return showPostsByContract(posts, filterName, page, pageSize);
+    }
+
+    public List<IdeaPostDto> showPostsByContract(List<IdeaPostDto> posts, String filterName, Integer page, Integer pageSize){
+        switch (filterName) {
+            case "by comments" -> posts.sort(Comparator.comparingInt(IdeaPostDto::getCommentsCount).reversed());
+            case "by likes" -> posts.sort(Comparator.comparingInt(IdeaPostDto::getLikesCount).reversed());
+            case "by dislikes" -> posts.sort(Comparator.comparingInt(IdeaPostDto::getDislikesCount).reversed());
+            default -> posts.sort((post1, post2) -> post2.getDate().compareTo(post1.getDate()));
         }
 
         int items = posts.size();
         int pages = (int) Math.ceil((double) items / pageSize);
-
-
 
         if(pages < page){
             System.out.println("The number of page is less then required");
