@@ -174,7 +174,7 @@ public class IdeaPostService {
         ));
     }
 
-    public List<IdeaPostDto> getPosts(Integer page, Integer pageSize, FilterDto filterDto, Principal principal, Long authorId){
+    public List<IdeaPostDto> getPosts(Integer page, Integer pageSize, FilterDto filterDto, Principal principal, Long authorId, Boolean favourite){
         Map<Integer, String> filters = getFiltersMap();
         Integer sortingFilterId = filterDto.getSortingFilterId();
         String filterName;

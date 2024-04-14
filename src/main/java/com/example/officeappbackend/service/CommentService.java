@@ -25,11 +25,16 @@ public class CommentService {
     private final CommentLikesRepository commentLikesRepository;
     private final CommentDislikesRepository commentDislikesRepository;
     private final UserService userService;
+
     public ResponseEntity<?> publishComment(Long id, CommentDto commentDto, Principal principal){
         Comment comment = new Comment();
         IdeaPost ideaPost = ideaPostRepository.findById(id).orElse(null);
         if(ideaPost == null)
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+
+        Integer commentsCount = ideaPost.getCommentsCount();
+        ideaPost.setCommentsCount(++commentsCount);
+
         comment.setIdeaPost(ideaPost);
         comment.setAuthor(userRepository.findByEmail(principal.getName()).orElse(null));
         comment.setContent(commentDto.getContent());
@@ -39,6 +44,8 @@ public class CommentService {
         comment.setLikesCount(0);
 
         commentRepository.save(comment);
+        ideaPostRepository.save(ideaPost);
+
         return new ResponseEntity<>(HttpStatus.OK);
     }
 

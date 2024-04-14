@@ -34,7 +34,7 @@ public class IdeaPostController {
         filterDto.setSortingFilterId(null);
         filterDto.setText("");
         filterDto.setOfficesId(List.of(1L, 2L, 3L, 4L, 5L));
-        List<IdeaPostDto> posts = ideaPostService.getPosts(page, pageSize, filterDto, principal, authorId);
+        List<IdeaPostDto> posts = ideaPostService.getPosts(page, pageSize, filterDto, principal, authorId, null);
         if(posts == null)
             return ResponseEntity.ok(new ArrayList<>());
         return ResponseEntity.ok(posts);
@@ -58,22 +58,22 @@ public class IdeaPostController {
         return ideaPostService.deletePost(id);
     }
 
-    @PostMapping("{id}/like")
+    @PostMapping("/{id}/like")
     public ResponseEntity<?> likePost(@PathVariable("id") Long id, Principal principal){
         return ideaPostService.likePost(id, principal);
     }
 
-    @DeleteMapping("{id}/like")
+    @DeleteMapping("/{id}/like")
     public ResponseEntity<?> unlikePost(@PathVariable("id") Long id, Principal principal){
         return ideaPostService.unlikePost(id, principal);
     }
 
-    @PostMapping("{id}/dislike")
+    @PostMapping("/{id}/dislike")
     public ResponseEntity<?> dislikePost(@PathVariable("id") Long id, Principal principal){
         return ideaPostService.dislikePost(id, principal);
     }
 
-    @DeleteMapping("{id}/dislike")
+    @DeleteMapping("/{id}/dislike")
     public ResponseEntity<?> undislikePost(@PathVariable("id") Long id, Principal principal){
         return ideaPostService.undislikePost(id, principal);
     }
@@ -85,9 +85,9 @@ public class IdeaPostController {
         filterDto.setOfficesId(List.of(office));
         filterDto.setSortingFilterId(sortingFilter);    
         filterDto.setText(text);
-        if(ideaPostService.getPosts(page, pageSize, filterDto, principal, null) == null)
+        if(ideaPostService.getPosts(page, pageSize, filterDto, principal, null, null) == null)
             return new ResponseEntity<>(new ArrayList<>(), HttpStatus.OK);
-        List<IdeaPostDto> resultPosts = ideaPostService.getPosts(page, pageSize, filterDto, principal, null);
+        List<IdeaPostDto> resultPosts = ideaPostService.getPosts(page, pageSize, filterDto, principal, null, null);
         return ResponseEntity.ok(resultPosts);
     }
 
