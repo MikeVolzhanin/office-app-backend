@@ -136,6 +136,13 @@ public class IdeaPostController {
             return commentService.showComments(PostId, page, pageSize, principal);
     }
 
+    @GetMapping("/posts/{postId}/comments")
+    public ResponseEntity<?> showCommentsByFilter(@PathVariable("postId") Long PostId,
+                                                  @RequestParam(name = "page") Integer page, @RequestParam(name = "page_size") Integer pageSize,
+                                                  Principal principal, @RequestParam(name = "sorting_filter") Integer filter){
+        return  ResponseEntity.ok("Yes");
+    }
+
     @GetMapping("/filters")
     public ResponseEntity<?> showFilters(){
         Filters filters = ideaPostService.getFilters();
