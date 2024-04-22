@@ -5,7 +5,7 @@
 -- Dumped from database version 16rc1
 -- Dumped by pg_dump version 16.1
 
--- Started on 2024-04-15 01:08:50
+-- Started on 2024-04-22 20:04:26
 
 SET statement_timeout = 0;
 SET lock_timeout = 0;
@@ -375,7 +375,8 @@ ALTER TABLE public.users_roles OWNER TO postgres;
 INSERT INTO public.comment VALUES (2, 17, 'Шикарно!', NULL, '2024-04-08 23:22:46.479', 0, 0, 33);
 INSERT INTO public.comment VALUES (3, 17, 'Великолепно', 'https://images.unsplash.com/photo-1473040713884-6be5953eba5a?q=80&w=2070&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D', '2024-04-08 23:24:43.352', 0, 0, 33);
 INSERT INTO public.comment VALUES (1, 17, 'Просто замечательно', 'https://images.unsplash.com/photo-1528057842559-7d55fef9bb87?q=80&w=2070&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D', '2024-04-08 23:20:02.88', 0, 1, 33);
-INSERT INTO public.comment VALUES (4, 17, 'nice!!', NULL, '2024-04-15 00:08:05.68', 0, 0, 33);
+INSERT INTO public.comment VALUES (5, 17, 'amazing!!', NULL, '2024-04-22 11:56:56.543', 0, 0, 33);
+INSERT INTO public.comment VALUES (4, 17, 'nice!!', NULL, '2024-04-15 00:08:05.68', 1, 0, 33);
 
 
 --
@@ -393,6 +394,7 @@ INSERT INTO public.comment_dislikes VALUES (3, 17, 1);
 -- Data for Name: comment_likes; Type: TABLE DATA; Schema: public; Owner: postgres
 --
 
+INSERT INTO public.comment_likes VALUES (3, 17, 4);
 
 
 --
@@ -413,7 +415,7 @@ INSERT INTO public.idea_post VALUES (34, 'Мониторы #3', 'Необход�
 INSERT INTO public.idea_post VALUES (36, 'Мониторы #5', 'Необходимо заменить все мониторы! #5', 17, 'https://cdn.thewirecutter.com/wp-content/media/2023/06/4kmonitors-2048px-9794.jpg,https://i.pcmag.com/imagery/reviews/04yXpm5uyjix6ORSzFZVOrA-1..v1693014357.jpg', 0, 0, 0, '2024-03-23 15:13:16.761', 2);
 INSERT INTO public.idea_post VALUES (37, 'Мониторы #6', 'Необходимо заменить все мониторы! #6', 17, 'https://cdn.thewirecutter.com/wp-content/media/2023/06/4kmonitors-2048px-9794.jpg,https://i.pcmag.com/imagery/reviews/04yXpm5uyjix6ORSzFZVOrA-1..v1693014357.jpg', 0, 0, 0, '2024-03-23 15:13:29.173', 5);
 INSERT INTO public.idea_post VALUES (39, 'Monitor EN YES PHOTO', 'Monitor EN', 17, 'Ramington.ru,ramington_2.ru', 0, 0, 0, '2024-03-26 15:03:38.18', 1);
-INSERT INTO public.idea_post VALUES (33, 'Monitor EN', 'Monitor EN', 18, 'Ramington.ru', 1, 0, 4, '2024-03-23 15:12:16.272', 1);
+INSERT INTO public.idea_post VALUES (33, 'Monitor EN', 'Monitor EN', 18, 'Ramington.ru', 1, 0, 5, '2024-03-23 15:12:16.272', 1);
 
 
 --
@@ -444,7 +446,7 @@ INSERT INTO public.office VALUES (5, 'https://archello.s3.eu-central-1.amazonaws
 -- Data for Name: refresh_token; Type: TABLE DATA; Schema: public; Owner: postgres
 --
 
-INSERT INTO public.refresh_token VALUES (105, 17, 'd9d8164a-0aed-41fc-b7a2-07d9fd2590d5', '2024-04-22 00:54:37.887');
+INSERT INTO public.refresh_token VALUES (108, 17, '0df6cd6b-c68c-433e-88f5-00d7b25d5c4f', '2024-04-29 19:44:44.705');
 
 
 --
@@ -498,7 +500,7 @@ SELECT pg_catalog.setval('public.comment_dislikes_id_seq', 3, true);
 -- Name: comment_id_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
 --
 
-SELECT pg_catalog.setval('public.comment_id_seq', 4, true);
+SELECT pg_catalog.setval('public.comment_id_seq', 5, true);
 
 
 --
@@ -507,7 +509,7 @@ SELECT pg_catalog.setval('public.comment_id_seq', 4, true);
 -- Name: comment_likes_id_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
 --
 
-SELECT pg_catalog.setval('public.comment_likes_id_seq', 2, true);
+SELECT pg_catalog.setval('public.comment_likes_id_seq', 3, true);
 
 
 --
@@ -552,7 +554,7 @@ SELECT pg_catalog.setval('public.office_id_seq', 5, true);
 -- Name: refresh_token_id_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
 --
 
-SELECT pg_catalog.setval('public.refresh_token_id_seq', 105, true);
+SELECT pg_catalog.setval('public.refresh_token_id_seq', 108, true);
 
 
 --
@@ -834,7 +836,7 @@ ALTER TABLE ONLY public.users_roles
     ADD CONSTRAINT users_roles_user_id_fkey FOREIGN KEY (user_id) REFERENCES public.users(id);
 
 
--- Completed on 2024-04-15 01:08:50
+-- Completed on 2024-04-22 20:04:26
 
 --
 -- PostgreSQL database dump complete
