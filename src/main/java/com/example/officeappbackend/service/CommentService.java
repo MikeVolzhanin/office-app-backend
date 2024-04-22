@@ -11,10 +11,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.security.Principal;
-import java.util.ArrayList;
-import java.util.Comparator;
-import java.util.Date;
-import java.util.List;
+import java.util.*;
 import java.util.stream.Collectors;
 
 @Service
@@ -136,37 +133,30 @@ public class CommentService {
     public ResponseEntity<?> showCommentsByFilter(Long PostId, Integer page, Integer pageSize, Principal principal, Integer filter){
         IdeaPost ideaPost = ideaPostRepository.findById(PostId).orElse(null);
         List<ResponseCommentDto> comments = new ArrayList<>(commentRepository.findByIdeaPost(ideaPost).stream().map((Comment comment) -> convertToResComDto(comment, principal)).toList());
+
         if(ideaPost == null)
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
 
         switch (filter){
-            case 1 : comments.sort((com1, com2) -> com2.getDate().compareTo(com1.getDate()));
-            case 2 : comments.sort(Comparator.comparing(ResponseCommentDto::getDate));
-            case 3 : comments.sort((com1, com2) -> {
+            case 1 -> comments.sort((com1, com2) -> com2.getDate().compareTo(com1.getDate()));
+            case 2 -> comments.sort(Collections.reverseOrder((com1, com2) -> com2.getDate().compareTo(com1.getDate())));
+            case 3 -> comments.sort((com1, com2) -> {
                 Integer sum1 = com1.getDislikesCount() + com1.getLikesCount();
                 Integer sum2 = com2.getDislikesCount() + com2.getLikesCount();
                 return sum1.compareTo(sum2);
             });
-            case 4 : comments.sort((com1, com2) -> {
+            case 4 -> comments.sort((com1, com2) -> {
                 Integer sum1 = com1.getDislikesCount() + com1.getLikesCount();
                 Integer sum2 = com2.getDislikesCount() + com2.getLikesCount();
                 return sum2.compareTo(sum1);
             });
+            default -> System.out.println("Был подан неверный код фильтра!");
         }
 
-        return generatePages(comments, page, pageSize, principal);
+        return generatePages(comments, page, pageSize);
     }
 
-    public ResponseEntity<?> showComments(Long PostId, Integer page, Integer pageSize, Principal principal){
-        IdeaPost ideaPost = ideaPostRepository.findById(PostId).orElse(null);
-        if(ideaPost == null)
-            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
-        List<ResponseCommentDto> comments = commentRepository.findByIdeaPost(ideaPost).stream().map((Comment comment) -> convertToResComDto(comment, principal)).toList();
-
-        return generatePages(comments, page, pageSize, principal);
-    }
-
-    public ResponseEntity<?> generatePages(List<ResponseCommentDto> comments, Integer page, Integer pageSize, Principal principal){
+    public ResponseEntity<?> generatePages(List<ResponseCommentDto> comments, Integer page, Integer pageSize){
         int items = comments.size();
         int pages = (int) Math.ceil((double) items / pageSize);
 

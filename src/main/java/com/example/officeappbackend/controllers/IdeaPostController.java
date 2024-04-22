@@ -129,18 +129,11 @@ public class IdeaPostController {
         return commentService.unlikeOrUndislikeComment(PostId, CommentsId, principal, "undislike");
     }
 
-    @GetMapping("/{id}/comments")
-    public ResponseEntity<?> showComments(@PathVariable("id") Long PostId,
-                                          @RequestParam(name = "page") Integer page, @RequestParam(name = "page_size") Integer pageSize,
-                                          Principal principal ){
-            return commentService.showComments(PostId, page, pageSize, principal);
-    }
-
-    @GetMapping("/posts/{postId}/comments")
+    @GetMapping("/{postId}/comments")
     public ResponseEntity<?> showCommentsByFilter(@PathVariable("postId") Long PostId,
                                                   @RequestParam(name = "page") Integer page, @RequestParam(name = "page_size") Integer pageSize,
                                                   Principal principal, @RequestParam(name = "sorting_filter") Integer filter){
-        return  ResponseEntity.ok("Yes");
+        return commentService.showCommentsByFilter(PostId, page, pageSize, principal, filter);
     }
 
     @GetMapping("/filters")
