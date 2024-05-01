@@ -136,6 +136,26 @@ public class IdeaPostController {
         return commentService.showCommentsByFilter(PostId, page, pageSize, principal, filter);
     }
 
+    @GetMapping("/my-office/suggested")
+    public ResponseEntity<?> getSuggested(@RequestParam(name="page") Integer page, @RequestParam(name="page_size") Integer pageSize){
+        return null;
+    }
+
+    @GetMapping("/my-office/in-progress")
+    public ResponseEntity<?> getInProgress(@RequestParam(name="page") Integer page, @RequestParam(name="page_size") Integer pageSize){
+        return null;
+    }
+
+    @GetMapping("/my-office/implemented")
+    public ResponseEntity<?> getImplemented(@RequestParam(name="page") Integer page, @RequestParam(name="page_size") Integer pageSize){
+        return null;
+    }
+
+    @GetMapping("/{postId}/suggest-idea-to-my-office")
+    public ResponseEntity<?> suggestIdeaToMyOffice(@PathVariable Integer postId) {
+        return null;
+    }
+
     @GetMapping("/filters")
     public ResponseEntity<?> showFilters(){
         Filters filters = ideaPostService.getFilters();
