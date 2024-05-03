@@ -156,6 +156,11 @@ public class IdeaPostController {
         return null;
     }
 
+    @GetMapping("/my-ideas")
+    public ResponseEntity<?> getMyIdeas(@RequestParam(name="page") Integer page, @RequestParam(name="page_size") Integer pageSize, Principal principal){
+        return ideaPostService.getMyIdeas(page, pageSize, principal);
+    }
+
     @GetMapping("/filters")
     public ResponseEntity<?> showFilters(){
         Filters filters = ideaPostService.getFilters();

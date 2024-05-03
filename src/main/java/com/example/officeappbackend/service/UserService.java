@@ -1,9 +1,11 @@
 package com.example.officeappbackend.service;
 
+import com.example.officeappbackend.Entities.IdeaPost;
 import com.example.officeappbackend.Entities.User;
 import com.example.officeappbackend.configs.PasswordEncoder;
 import com.example.officeappbackend.dto.*;
 import com.example.officeappbackend.repositories.UserRepository;
+import com.example.officeappbackend.util.Page;
 import lombok.RequiredArgsConstructor;
 
 import org.modelmapper.ModelMapper;
@@ -16,9 +18,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.security.Principal;
-import java.util.Date;
-import java.util.List;
-import java.util.Optional;
+import java.util.*;
 import java.util.stream.Collectors;
 
 @Service
@@ -28,6 +28,7 @@ public class UserService implements UserDetailsService {
     private final RoleService roleService;
     private final OfficeService officeService;
     private final PasswordEncoder passwordEncoder;
+    private final Page pageGeneration;
 
     public Optional<User> findByEmail(String username){
         return userRepository.findByEmail(username);
@@ -99,6 +100,11 @@ public class UserService implements UserDetailsService {
         if(author == null)
             return null;
         return convertToIdeaAuthor(author);
+    }
+
+    public ResponseEntity<?> getEmployees(Integer page, Integer pageSize){
+        List<IdeaAuthor> employees = userRepository.findAll().stream().map(this::convertToIdeaAuthor).toList();
+        return pageGeneration.generatePages(employees, page, pageSize);
     }
 
     public IdeaAuthor convertToIdeaAuthor(User user){

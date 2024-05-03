@@ -5,6 +5,7 @@ import com.example.officeappbackend.dto.*;
 import com.example.officeappbackend.repositories.DislikesRepository;
 import com.example.officeappbackend.repositories.IdeaPostRepository;
 import com.example.officeappbackend.repositories.LikesRepository;
+import com.example.officeappbackend.util.Page;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -12,7 +13,6 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.security.Principal;
-import java.time.LocalDateTime;
 import java.util.*;
 import java.util.stream.Collectors;
 
@@ -24,6 +24,7 @@ public class IdeaPostService {
     private final OfficeService officeService;
     private final LikesRepository likesRepository;
     private final DislikesRepository dislikesRepository;
+    private final Page<IdeaPostDto> pageGeneration;
 
     public Map<Integer, String> getFiltersMap(){
         Map<Integer, String> filters = new HashMap<>();
@@ -270,6 +271,12 @@ public class IdeaPostService {
             return List.of(posts.get(0));
 
         return posts.subList(fromInd, toInd);
+    }
+
+    public ResponseEntity<?> getMyIdeas(Integer page, Integer pageSize, Principal principal){
+        User mainUser = userService.findByEmail(principal.getName()).orElse(null);
+        List<IdeaPostDto> myIdeas = ideaPostRepository.findByUserId(mainUser).stream().map(ideaPost -> convertToIdeaPostDto(ideaPost, principal)).toList();
+        return pageGeneration.generatePages(myIdeas, page, pageSize);
     }
 
     public Filters getFilters(){
