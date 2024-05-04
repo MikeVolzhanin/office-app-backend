@@ -106,7 +106,6 @@ public class UserService implements UserDetailsService {
         List<IdeaAuthor> employees = userRepository.findAll().stream().map(this::convertToIdeaAuthor).toList();
         return pageGeneration.generatePages(employees, page, pageSize);
     }
-
     public IdeaAuthor convertToIdeaAuthor(User user){
         IdeaAuthor ideaAuthor = new IdeaAuthor();
         ideaAuthor.setId(user.getId());

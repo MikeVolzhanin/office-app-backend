@@ -109,6 +109,16 @@ public class IdeaPostController {
         return commentService.publishComment(id, commentDto, principal);
     }
 
+    @PatchMapping("/{id}/comments/{commentId}")
+    public ResponseEntity<?> updateComment(@PathVariable("id") Long id, @PathVariable("commentId") Long commentId, @RequestBody CommentDto commentDto, Principal principal){
+        return commentService.updateComment(id, commentId, commentDto, principal);
+    }
+
+    @DeleteMapping("/{id}/comments/{commentId}")
+    public ResponseEntity<?> deleteComment(@PathVariable("id") Long id, @PathVariable("commentId") Long commentId, Principal principal){
+        return commentService.deleteComment(id, commentId, principal);
+    }
+
     @PostMapping("/{id}/comments/{commentsId}/like")
     public ResponseEntity<?> likeComment(@PathVariable("id") Long PostId, @PathVariable("commentsId") Long CommentsId, Principal principal){
         return commentService.likeOrDislikeComment(PostId, CommentsId, principal, "like");

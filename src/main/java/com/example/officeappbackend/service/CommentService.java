@@ -4,6 +4,7 @@ import com.example.officeappbackend.Entities.*;
 import com.example.officeappbackend.dto.CommentDto;
 import com.example.officeappbackend.dto.ResponseCommentDto;
 import com.example.officeappbackend.repositories.*;
+import com.example.officeappbackend.util.Page;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -22,7 +23,8 @@ public class CommentService {
     private final CommentLikesRepository commentLikesRepository;
     private final CommentDislikesRepository commentDislikesRepository;
     private final UserService userService;
-
+    private final Page<ResponseCommentDto> pageService;
+    @Transactional
     public ResponseEntity<?> publishComment(Long id, CommentDto commentDto, Principal principal){
         Comment comment = new Comment();
         IdeaPost ideaPost = ideaPostRepository.findById(id).orElse(null);
@@ -43,6 +45,36 @@ public class CommentService {
         commentRepository.save(comment);
         ideaPostRepository.save(ideaPost);
 
+        return new ResponseEntity<>(HttpStatus.OK);
+    }
+
+    @Transactional
+    public ResponseEntity<?> updateComment(Long postId, Long commentId, CommentDto commentDto, Principal principal){
+        IdeaPost ideaPost = ideaPostRepository.findById(postId).orElse(null);
+        Comment comment = commentRepository.findById(commentId).orElse(null);
+        if(ideaPost == null || comment == null)
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+
+        if(!principal.getName().equals(comment.getAuthor().getEmail()))
+            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+
+        comment.setContent(commentDto.getContent());
+        comment.setAttachedImage(commentDto.getAttachedImage());
+        commentRepository.save(comment);
+        return new ResponseEntity<>(HttpStatus.OK);
+    }
+
+    @Transactional
+    public ResponseEntity<?> deleteComment(Long postId, Long commentId, Principal principal){
+        IdeaPost ideaPost = ideaPostRepository.findById(postId).orElse(null);
+        Comment comment = commentRepository.findById(commentId).orElse(null);
+        if(ideaPost == null || comment == null)
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+
+        if(!principal.getName().equals(comment.getAuthor().getEmail()))
+            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+
+        commentRepository.delete(comment);
         return new ResponseEntity<>(HttpStatus.OK);
     }
 
@@ -152,29 +184,9 @@ public class CommentService {
             default -> System.out.println("Был подан неверный код фильтра!");
         }
 
-        return generatePages(comments, page, pageSize);
+        return pageService.generatePages(comments, page, pageSize);
     }
 
-    public ResponseEntity<?> generatePages(List<ResponseCommentDto> comments, Integer page, Integer pageSize){
-        int items = comments.size();
-        int pages = (int) Math.ceil((double) items / pageSize);
-
-        if(pages < page){
-            System.out.println("The number of page is less then required");
-            return ResponseEntity.ok(new ArrayList<>());
-        }
-
-        int fromInd = pageSize * (page - 1);
-        int toInd = fromInd + pageSize;
-
-        if(toInd > items)
-            toInd = items;
-
-        if(items == 1)
-            return ResponseEntity.ok(List.of(comments.get(0)));
-
-        return ResponseEntity.ok(comments.subList(fromInd, toInd));
-    }
     public ResponseCommentDto convertToResComDto(Comment comment, Principal principal){
         ResponseCommentDto responseCommentDto = new ResponseCommentDto();
         User author = userRepository.findByEmail(principal.getName()).orElse(null);
