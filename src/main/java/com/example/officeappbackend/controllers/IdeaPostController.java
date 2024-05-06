@@ -167,6 +167,11 @@ public class IdeaPostController {
         return ideaPostService.suggestIdeaToMyOffice(postId, principal);
     }
 
+    @PostMapping("/my-office/{PostId}/in-progress")
+    public ResponseEntity<?> addInProgress(@PathVariable Long PostId, Principal principal){
+        return ideaPostService.addInProgress(PostId, principal);
+    }
+
     @GetMapping("/my-ideas")
     public ResponseEntity<?> getMyIdeas(@RequestParam(name="page") Integer page, @RequestParam(name="page_size") Integer pageSize, Principal principal){
         return ideaPostService.getMyIdeas(page, pageSize, principal);

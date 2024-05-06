@@ -2,11 +2,9 @@ package com.example.officeappbackend.service;
 
 import com.example.officeappbackend.Entities.*;
 import com.example.officeappbackend.dto.*;
-import com.example.officeappbackend.repositories.DislikesRepository;
-import com.example.officeappbackend.repositories.IdeaPostRepository;
-import com.example.officeappbackend.repositories.LikesRepository;
-import com.example.officeappbackend.repositories.SuggestedPostRepository;
+import com.example.officeappbackend.repositories.*;
 import com.example.officeappbackend.util.Page;
+import jakarta.persistence.criteria.CriteriaBuilder;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -27,6 +25,8 @@ public class IdeaPostService {
     private final DislikesRepository dislikesRepository;
     private final Page<IdeaPostDto> pageGeneration;
     private final SuggestedPostRepository suggest;
+    private final InProgressRepository progress;
+    private final ImplementedRepository implemented;
     public Map<Integer, String> getFiltersMap(){
         Map<Integer, String> filters = new HashMap<>();
         filters.put(1, "by comments");
@@ -302,6 +302,21 @@ public class IdeaPostService {
             posts.add(convertToIdeaPostDto(suggested.getPost(), principal));
 
         return pageGeneration.generatePages(posts, page, pageSize);
+    }
+
+    public ResponseEntity<?> addInProgress(Long postId, Principal principal){
+        Office office = userService.findByEmail(principal.getName()).get().getOffice();
+        IdeaPost ideaPost = ideaPostRepository.findById(postId).get();
+
+        if(suggest.findByPostAndOffice(ideaPost, office).isEmpty())
+            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+
+        suggest.delete(suggest.findByPostAndOffice(ideaPost, office).get());
+        InProgress p = new InProgress();
+        p.setPost(ideaPost);
+        p.setOffice(office);
+        progress.save(p);
+        return new ResponseEntity<>(HttpStatus.OK);
     }
 
     public Filters getFilters(){
