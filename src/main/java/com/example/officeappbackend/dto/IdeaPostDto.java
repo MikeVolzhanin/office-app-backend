@@ -22,4 +22,5 @@ public class IdeaPostDto {
     private Integer dislikesCount;
     private Boolean isDislikePressed;
     private Integer commentsCount;
+    private Boolean isSuggestedToMyOffice;
 }

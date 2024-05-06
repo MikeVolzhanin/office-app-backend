@@ -284,7 +284,7 @@ public class IdeaPostService {
         IdeaPost ideaPost = ideaPostRepository.findById(postId).get();
         Office office = userService.findByEmail(principal.getName()).get().getOffice();
 
-        if(suggest.findByPostAndOffice(ideaPost, office).isPresent())
+        if(suggest.findByPostAndOffice(ideaPost, office).isPresent() || implemented.findByPostAndOffice(ideaPost, office).isPresent())
             return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
 
         SuggestedPosts suggestedPost = new SuggestedPosts();
@@ -376,6 +376,7 @@ public class IdeaPostService {
     public IdeaPostDto convertToIdeaPostDto(IdeaPost ideaPost, Principal principal) {
 
         IdeaPostDto post = new IdeaPostDto();
+        Office office = userService.findByEmail(principal.getName()).get().getOffice();
 
         post.setId(ideaPost.getId());
         post.setTitle(ideaPost.getTitle());
@@ -393,6 +394,7 @@ public class IdeaPostService {
         post.setCommentsCount(ideaPost.getCommentsCount());
         post.setDate(ideaPost.getCreatedAt());
 
+        post.setIsSuggestedToMyOffice(suggest.findByPostAndOffice(ideaPost, office).isPresent());
         return post;
     }
 
