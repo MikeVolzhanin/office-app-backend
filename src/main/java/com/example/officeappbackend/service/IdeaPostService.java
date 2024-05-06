@@ -25,7 +25,7 @@ public class IdeaPostService {
     private final OfficeService officeService;
     private final LikesRepository likesRepository;
     private final DislikesRepository dislikesRepository;
-    private final Page pageGeneration;
+    private final Page<IdeaPostDto> pageGeneration;
     private final SuggestedPostRepository suggest;
     public Map<Integer, String> getFiltersMap(){
         Map<Integer, String> filters = new HashMap<>();
@@ -297,7 +297,11 @@ public class IdeaPostService {
     public ResponseEntity<?> getSuggested(Integer page, Integer pageSize, Principal principal){
         Office office = userService.findByEmail(principal.getName()).get().getOffice();
         List<SuggestedPosts> suggestedPosts = suggest.findByOffice(office);
-        return pageGeneration.generatePages(suggestedPosts, page, pageSize);
+        List<IdeaPostDto> posts = new ArrayList<>();
+        for(SuggestedPosts suggested : suggestedPosts)
+            posts.add(convertToIdeaPostDto(suggested.getPost(), principal));
+
+        return pageGeneration.generatePages(posts, page, pageSize);
     }
 
     public Filters getFilters(){
