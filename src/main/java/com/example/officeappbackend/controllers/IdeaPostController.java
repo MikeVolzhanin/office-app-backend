@@ -1,5 +1,6 @@
 package com.example.officeappbackend.controllers;
 
+import com.example.officeappbackend.Entities.IdeaPost;
 import com.example.officeappbackend.dto.*;
 import com.example.officeappbackend.service.CommentService;
 import com.example.officeappbackend.service.IdeaPostService;
@@ -147,8 +148,8 @@ public class IdeaPostController {
     }
 
     @GetMapping("/my-office/suggested")
-    public ResponseEntity<?> getSuggested(@RequestParam(name="page") Integer page, @RequestParam(name="page_size") Integer pageSize){
-        return null;
+    public ResponseEntity<?> getSuggested(@RequestParam(name="page") Integer page, @RequestParam(name="page_size") Integer pageSize, Principal principal){
+        return ideaPostService.getSuggested(page, pageSize, principal);
     }
 
     @GetMapping("/my-office/in-progress")
@@ -161,9 +162,9 @@ public class IdeaPostController {
         return null;
     }
 
-    @GetMapping("/{postId}/suggest-idea-to-my-office")
-    public ResponseEntity<?> suggestIdeaToMyOffice(@PathVariable Integer postId) {
-        return null;
+    @PostMapping("/{postId}/suggest-idea-to-my-office")
+    public ResponseEntity<?> suggestIdeaToMyOffice(@PathVariable Long postId, Principal principal) {
+        return ideaPostService.suggestIdeaToMyOffice(postId, principal);
     }
 
     @GetMapping("/my-ideas")

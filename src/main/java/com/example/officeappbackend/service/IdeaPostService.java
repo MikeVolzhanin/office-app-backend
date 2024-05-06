@@ -5,6 +5,7 @@ import com.example.officeappbackend.dto.*;
 import com.example.officeappbackend.repositories.DislikesRepository;
 import com.example.officeappbackend.repositories.IdeaPostRepository;
 import com.example.officeappbackend.repositories.LikesRepository;
+import com.example.officeappbackend.repositories.SuggestedPostRepository;
 import com.example.officeappbackend.util.Page;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -24,8 +25,8 @@ public class IdeaPostService {
     private final OfficeService officeService;
     private final LikesRepository likesRepository;
     private final DislikesRepository dislikesRepository;
-    private final Page<IdeaPostDto> pageGeneration;
-
+    private final Page pageGeneration;
+    private final SuggestedPostRepository suggest;
     public Map<Integer, String> getFiltersMap(){
         Map<Integer, String> filters = new HashMap<>();
         filters.put(1, "by comments");
@@ -277,6 +278,26 @@ public class IdeaPostService {
         User mainUser = userService.findByEmail(principal.getName()).orElse(null);
         List<IdeaPostDto> myIdeas = ideaPostRepository.findByUserId(mainUser).stream().map(ideaPost -> convertToIdeaPostDto(ideaPost, principal)).toList();
         return pageGeneration.generatePages(myIdeas, page, pageSize);
+    }
+
+    public ResponseEntity<?> suggestIdeaToMyOffice(Long postId, Principal principal){
+        IdeaPost ideaPost = ideaPostRepository.findById(postId).get();
+        Office office = userService.findByEmail(principal.getName()).get().getOffice();
+
+        if(suggest.findByPostAndOffice(ideaPost, office).isPresent())
+            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+
+        SuggestedPosts suggestedPost = new SuggestedPosts();
+        suggestedPost.setPost(ideaPost);
+        suggestedPost.setOffice(office);
+        suggest.save(suggestedPost);
+        return new ResponseEntity<>(HttpStatus.OK);
+    }
+
+    public ResponseEntity<?> getSuggested(Integer page, Integer pageSize, Principal principal){
+        Office office = userService.findByEmail(principal.getName()).get().getOffice();
+        List<SuggestedPosts> suggestedPosts = suggest.findByOffice(office);
+        return pageGeneration.generatePages(suggestedPosts, page, pageSize);
     }
 
     public Filters getFilters(){
