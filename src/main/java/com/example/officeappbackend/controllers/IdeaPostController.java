@@ -153,13 +153,13 @@ public class IdeaPostController {
     }
 
     @GetMapping("/my-office/in-progress")
-    public ResponseEntity<?> getInProgress(@RequestParam(name="page") Integer page, @RequestParam(name="page_size") Integer pageSize){
-        return null;
+    public ResponseEntity<?> getInProgress(@RequestParam(name="page") Integer page, @RequestParam(name="page_size") Integer pageSize, Principal principal){
+        return ideaPostService.getInProgress(page, pageSize, principal);
     }
 
     @GetMapping("/my-office/implemented")
-    public ResponseEntity<?> getImplemented(@RequestParam(name="page") Integer page, @RequestParam(name="page_size") Integer pageSize){
-        return null;
+    public ResponseEntity<?> getImplemented(@RequestParam(name="page") Integer page, @RequestParam(name="page_size") Integer pageSize, Principal principal){
+        return ideaPostService.getImplemented(page, pageSize, principal);
     }
 
     @PostMapping("/{postId}/suggest-idea-to-my-office")
@@ -170,6 +170,11 @@ public class IdeaPostController {
     @PostMapping("/my-office/{PostId}/in-progress")
     public ResponseEntity<?> addInProgress(@PathVariable Long PostId, Principal principal){
         return ideaPostService.addInProgress(PostId, principal);
+    }
+
+    @PostMapping("/my-office/{PostId}/implemented")
+    public ResponseEntity<?> addImplemented(Principal principal, @PathVariable Long PostId){
+        return ideaPostService.addImplemented(PostId, principal);
     }
 
     @GetMapping("/my-ideas")

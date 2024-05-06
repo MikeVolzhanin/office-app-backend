@@ -319,6 +319,45 @@ public class IdeaPostService {
         return new ResponseEntity<>(HttpStatus.OK);
     }
 
+    public ResponseEntity<?> getInProgress(Integer page, Integer pageSize, Principal principal){
+        Office office = userService.findByEmail(principal.getName()).get().getOffice();
+        List<InProgress> inProgressList = progress.findByOffice(office);
+        List<IdeaPostDto> posts = new ArrayList<>();
+
+        for(InProgress p : inProgressList)
+            posts.add(convertToIdeaPostDto(p.getPost(), principal));
+
+        return  pageGeneration.generatePages(posts, page, pageSize);
+    }
+
+    public ResponseEntity<?> addImplemented(Long postId, Principal principal){
+        Office office = userService.findByEmail(principal.getName()).get().getOffice();
+        IdeaPost ideaPost = ideaPostRepository.findById(postId).get();
+
+        if(progress.findByPostAndOffice(ideaPost, office).isEmpty())
+            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+
+        progress.delete(progress.findByPostAndOffice(ideaPost, office).get());
+
+        Implemented status = new Implemented();
+        status.setPost(ideaPost);
+        status.setOffice(office);
+
+        implemented.save(status);
+        return new ResponseEntity<>(HttpStatus.OK);
+    }
+
+    public ResponseEntity<?> getImplemented(Integer page, Integer pageSize, Principal principal){
+        Office office = userService.findByEmail(principal.getName()).get().getOffice();
+        List<Implemented> implementedList = implemented.findByOffice(office);
+        List<IdeaPostDto> posts = new ArrayList<>();
+
+        for(Implemented p : implementedList)
+            posts.add(convertToIdeaPostDto(p.getPost(), principal));
+
+        return pageGeneration.generatePages(posts, page, pageSize);
+    }
+
     public Filters getFilters(){
         List<OfficeDto> offices = officeService.getAvailableOffices().stream().map(officeService::convertToOfficeDto).collect(Collectors.toList());
         List<SortingFilter> sortingFilters = new ArrayList<>();
