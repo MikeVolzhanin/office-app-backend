@@ -11,4 +11,5 @@ import java.util.Optional;
 public interface InProgressRepository extends JpaRepository<InProgress, Long> {
     List<InProgress> findByOffice(Office office);
     Optional<InProgress> findByPostAndOffice(IdeaPost post, Office office);
+    void deleteByPost(IdeaPost post);
 }

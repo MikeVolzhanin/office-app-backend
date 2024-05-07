@@ -10,4 +10,5 @@ import java.util.List;
 public interface SuggestedPostRepository extends JpaRepository<SuggestedPosts, Long> {
     Optional<SuggestedPosts> findByPostAndOffice(IdeaPost post, Office office);
     List<SuggestedPosts> findByOffice(Office office);
+    void deleteByPost(IdeaPost post);
 }

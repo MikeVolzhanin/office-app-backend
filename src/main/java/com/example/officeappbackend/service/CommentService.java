@@ -68,13 +68,19 @@ public class CommentService {
     public ResponseEntity<?> deleteComment(Long postId, Long commentId, Principal principal){
         IdeaPost ideaPost = ideaPostRepository.findById(postId).orElse(null);
         Comment comment = commentRepository.findById(commentId).orElse(null);
+
         if(ideaPost == null || comment == null)
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
 
         if(!principal.getName().equals(comment.getAuthor().getEmail()))
             return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
 
+        Integer countOfComment = ideaPost.getCommentsCount();
+        ideaPost.setCommentsCount(--countOfComment);
+        commentDislikesRepository.deleteByAuthorAndComment(comment.getAuthor(), comment);
+        commentLikesRepository.deleteByAuthorAndComment(comment.getAuthor(), comment);
         commentRepository.delete(comment);
+        ideaPostRepository.save(ideaPost);
         return new ResponseEntity<>(HttpStatus.OK);
     }
 

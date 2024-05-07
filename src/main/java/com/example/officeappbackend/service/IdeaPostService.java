@@ -38,12 +38,14 @@ public class IdeaPostService {
     @Transactional
     public void publishPost(PublishPostDto post, Principal principal){
         IdeaPost ideaPost = new IdeaPost();
+
         User user = userService.findByEmail(principal.getName()).orElse(null);
+        Office office = Objects.requireNonNull(userService.findByEmail(principal.getName()).orElse(null)).getOffice();
 
         ideaPost.setTitle(post.getTitle());
         ideaPost.setUserId(user);
         ideaPost.setContent(post.getContent());
-        ideaPost.setOfficeId(Objects.requireNonNull(userService.findByEmail(principal.getName()).orElse(null)).getOffice());
+        ideaPost.setOfficeId(office);
         ideaPost.setAttachedImages(convertUrlListToString(post.getAttachedImages()));
 
         ideaPost.setLikesCount(0);
@@ -51,8 +53,9 @@ public class IdeaPostService {
         ideaPost.setCommentsCount(0);
 
         ideaPost.setCreatedAt(new Date());
-
-        ideaPostRepository.save(ideaPost);
+        Long postId = ideaPostRepository.save(ideaPost).getId();
+        System.out.println("New post! ID: " + postId);
+        suggestIdeaToMyOffice(postId, principal);
     }
 
     @Transactional
@@ -80,6 +83,11 @@ public class IdeaPostService {
 
         likesRepository.deleteByPostId(currentPost);
         dislikesRepository.deleteByPostId(currentPost);
+
+        suggest.deleteByPost(currentPost);
+        progress.deleteByPost(currentPost);
+        implemented.deleteByPost(currentPost);
+
         ideaPostRepository.deleteById(id);
         return ResponseEntity.ok(new Success("The post was deleted successfully",
                 new Date()

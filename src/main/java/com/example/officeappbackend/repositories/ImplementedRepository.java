@@ -11,4 +11,5 @@ import java.util.Optional;
 public interface ImplementedRepository extends JpaRepository<Implemented, Long>{
     List<Implemented> findByOffice(Office office);
     Optional<Implemented> findByPostAndOffice(IdeaPost post, Office office);
+    void deleteByPost(IdeaPost post);
 }
