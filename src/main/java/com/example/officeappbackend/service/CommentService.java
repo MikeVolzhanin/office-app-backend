@@ -85,6 +85,16 @@ public class CommentService {
     }
 
     @Transactional
+    public void deleteAllComments(IdeaPost ideaPost){
+        List<Comment> comments = commentRepository.findByIdeaPost(ideaPost);
+        for(Comment comment : comments){
+            commentDislikesRepository.deleteByAuthorAndComment(comment.getAuthor(), comment);
+            commentLikesRepository.deleteByAuthorAndComment(comment.getAuthor(), comment);
+            commentRepository.delete(comment);
+        }
+    }
+
+    @Transactional
     public ResponseEntity<?> likeOrDislikeComment(Long PostId, Long CommentId, Principal principal, String type){
         Comment comment = commentRepository.findById(CommentId).orElse(null);
         IdeaPost ideaPost = ideaPostRepository.findById(PostId).orElse(null);

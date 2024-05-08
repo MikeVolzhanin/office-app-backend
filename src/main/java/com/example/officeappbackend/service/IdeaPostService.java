@@ -27,6 +27,7 @@ public class IdeaPostService {
     private final SuggestedPostRepository suggest;
     private final InProgressRepository progress;
     private final ImplementedRepository implemented;
+    private final CommentService commentService;
     public Map<Integer, String> getFiltersMap(){
         Map<Integer, String> filters = new HashMap<>();
         filters.put(1, "by comments");
@@ -87,6 +88,7 @@ public class IdeaPostService {
         suggest.deleteByPost(currentPost);
         progress.deleteByPost(currentPost);
         implemented.deleteByPost(currentPost);
+        commentService.deleteAllComments(currentPost);
 
         ideaPostRepository.deleteById(id);
         return ResponseEntity.ok(new Success("The post was deleted successfully",
