@@ -1,6 +1,7 @@
 package com.example.officeappbackend.service;
 
 import com.example.officeappbackend.Entities.IdeaPost;
+import com.example.officeappbackend.Entities.Office;
 import com.example.officeappbackend.Entities.User;
 import com.example.officeappbackend.configs.PasswordEncoder;
 import com.example.officeappbackend.dto.*;
@@ -102,10 +103,12 @@ public class UserService implements UserDetailsService {
         return convertToIdeaAuthor(author);
     }
 
-    public ResponseEntity<?> getEmployees(Integer page, Integer pageSize){
-        List<IdeaAuthor> employees = userRepository.findAll().stream().map(this::convertToIdeaAuthor).toList();
+    public ResponseEntity<?> getEmployees(Integer page, Integer pageSize, Principal principal){
+        Office office = findByEmail(principal.getName()).get().getOffice();
+        List<IdeaAuthor> employees = userRepository.findByOffice(office).stream().map(this::convertToIdeaAuthor).toList();
         return pageGeneration.generatePages(employees, page, pageSize);
     }
+
     public IdeaAuthor convertToIdeaAuthor(User user){
         IdeaAuthor ideaAuthor = new IdeaAuthor();
         ideaAuthor.setId(user.getId());

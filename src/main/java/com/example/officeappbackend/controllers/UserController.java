@@ -36,8 +36,8 @@ public class UserController {
         return ResponseEntity.ok(author);
     }
     @GetMapping("/my-office/employees")
-    public ResponseEntity<?> getEmployees(@RequestParam(name="page") Integer page, @RequestParam(name="page_size") Integer pageSize){
-        return userService.getEmployees(page, pageSize);
+    public ResponseEntity<?> getEmployees(@RequestParam(name="page") Integer page, @RequestParam(name="page_size") Integer pageSize, Principal principal){
+        return userService.getEmployees(page, pageSize, principal);
     }
 
 }
