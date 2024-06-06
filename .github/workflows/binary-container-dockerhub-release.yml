@@ -29,7 +29,6 @@ jobs:
           asset_path: ./target/office-app-backend-0.0.1-SNAPSHOT.jar  # Путь к вашему JAR файлу
           asset_name: office-app-backend-0.0.1-SNAPSHOT.jar
           asset_content_type: application/java-archive
-          token: ${{ secrets.GITHUB_TOKEN }}
 
       - name: Build Docker image
         run: docker-compose build
