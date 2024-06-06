@@ -5,7 +5,7 @@
 -- Dumped from database version 16rc1
 -- Dumped by pg_dump version 16.1
 
--- Started on 2024-05-06 15:02:30
+-- Started on 2024-05-09 19:45:42
 
 SET statement_timeout = 0;
 SET lock_timeout = 0;
@@ -459,10 +459,6 @@ ALTER TABLE public.users_roles OWNER TO postgres;
 -- Data for Name: comment; Type: TABLE DATA; Schema: public; Owner: postgres
 --
 
-INSERT INTO public.comment VALUES (3, 17, 'Великолепно', 'https://images.unsplash.com/photo-1473040713884-6be5953eba5a?q=80&w=2070&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D', '2024-04-08 23:24:43.352', 0, 0, 33);
-INSERT INTO public.comment VALUES (1, 17, 'Просто замечательно', 'https://images.unsplash.com/photo-1528057842559-7d55fef9bb87?q=80&w=2070&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D', '2024-04-08 23:20:02.88', 0, 1, 33);
-INSERT INTO public.comment VALUES (5, 17, 'amazing!!', NULL, '2024-04-22 11:56:56.543', 0, 0, 33);
-INSERT INTO public.comment VALUES (4, 17, 'nice!!', NULL, '2024-04-15 00:08:05.68', 1, 0, 33);
 
 
 --
@@ -471,7 +467,6 @@ INSERT INTO public.comment VALUES (4, 17, 'nice!!', NULL, '2024-04-15 00:08:05.6
 -- Data for Name: comment_dislikes; Type: TABLE DATA; Schema: public; Owner: postgres
 --
 
-INSERT INTO public.comment_dislikes VALUES (3, 17, 1);
 
 
 --
@@ -480,7 +475,6 @@ INSERT INTO public.comment_dislikes VALUES (3, 17, 1);
 -- Data for Name: comment_likes; Type: TABLE DATA; Schema: public; Owner: postgres
 --
 
-INSERT INTO public.comment_likes VALUES (3, 17, 4);
 
 
 --
@@ -497,11 +491,10 @@ INSERT INTO public.comment_likes VALUES (3, 17, 4);
 -- Data for Name: idea_post; Type: TABLE DATA; Schema: public; Owner: postgres
 --
 
-INSERT INTO public.idea_post VALUES (34, 'Мониторы #3', 'Необходимо заменить все мониторы! #3', 18, 'https://cdn.thewirecutter.com/wp-content/media/2023/06/4kmonitors-2048px-9794.jpg,https://i.pcmag.com/imagery/reviews/04yXpm5uyjix6ORSzFZVOrA-1..v1693014357.jpg', 0, 0, 0, '2024-03-23 15:12:28.291', 4);
 INSERT INTO public.idea_post VALUES (36, 'Мониторы #5', 'Необходимо заменить все мониторы! #5', 17, 'https://cdn.thewirecutter.com/wp-content/media/2023/06/4kmonitors-2048px-9794.jpg,https://i.pcmag.com/imagery/reviews/04yXpm5uyjix6ORSzFZVOrA-1..v1693014357.jpg', 0, 0, 0, '2024-03-23 15:13:16.761', 2);
-INSERT INTO public.idea_post VALUES (37, 'Мониторы #6', 'Необходимо заменить все мониторы! #6', 17, 'https://cdn.thewirecutter.com/wp-content/media/2023/06/4kmonitors-2048px-9794.jpg,https://i.pcmag.com/imagery/reviews/04yXpm5uyjix6ORSzFZVOrA-1..v1693014357.jpg', 0, 0, 0, '2024-03-23 15:13:29.173', 5);
 INSERT INTO public.idea_post VALUES (39, 'Monitor EN YES PHOTO', 'Monitor EN', 17, 'Ramington.ru,ramington_2.ru', 0, 0, 0, '2024-03-26 15:03:38.18', 1);
-INSERT INTO public.idea_post VALUES (33, 'Monitor EN', 'Monitor EN', 18, 'Ramington.ru', 1, 0, 5, '2024-03-23 15:12:16.272', 1);
+INSERT INTO public.idea_post VALUES (43, 'Мониторы #9 NO PHOTO', 'Необходимо заменить все мониторы! #7 NO PHOTO', 17, '', 0, 0, 0, '2024-05-09 19:28:02.768', 1);
+INSERT INTO public.idea_post VALUES (44, 'Title', 'content', 17, '', 0, 0, 0, '2024-05-09 19:33:15.637', 1);
 
 
 --
@@ -510,7 +503,6 @@ INSERT INTO public.idea_post VALUES (33, 'Monitor EN', 'Monitor EN', 18, 'Raming
 -- Data for Name: implemented; Type: TABLE DATA; Schema: public; Owner: postgres
 --
 
-INSERT INTO public.implemented VALUES (1, 34, 1);
 INSERT INTO public.implemented VALUES (2, 36, 1);
 
 
@@ -528,7 +520,6 @@ INSERT INTO public.implemented VALUES (2, 36, 1);
 -- Data for Name: likes; Type: TABLE DATA; Schema: public; Owner: postgres
 --
 
-INSERT INTO public.likes VALUES (17, 33, 54);
 
 
 --
@@ -550,7 +541,7 @@ INSERT INTO public.office VALUES (5, 'https://archello.s3.eu-central-1.amazonaws
 -- Data for Name: refresh_token; Type: TABLE DATA; Schema: public; Owner: postgres
 --
 
-INSERT INTO public.refresh_token VALUES (113, 17, 'fc95ef2d-2fbb-4bf3-a335-88bf467ebd7f', '2024-05-13 14:30:03.518');
+INSERT INTO public.refresh_token VALUES (121, 17, 'ba299cc3-4c5e-4a4d-b3ad-96653a03b759', '2024-05-16 19:27:48.191');
 
 
 --
@@ -569,6 +560,9 @@ INSERT INTO public.roles VALUES (2, 'ROLE_ADMIN');
 -- Data for Name: suggested_post; Type: TABLE DATA; Schema: public; Owner: postgres
 --
 
+INSERT INTO public.suggested_post VALUES (39, 1, 4);
+INSERT INTO public.suggested_post VALUES (43, 1, 7);
+INSERT INTO public.suggested_post VALUES (44, 1, 8);
 
 
 --
@@ -639,7 +633,7 @@ SELECT pg_catalog.setval('public.dislikes_id_seq', 44, true);
 -- Name: idea_post_id_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
 --
 
-SELECT pg_catalog.setval('public.idea_post_id_seq', 39, true);
+SELECT pg_catalog.setval('public.idea_post_id_seq', 44, true);
 
 
 --
@@ -684,7 +678,7 @@ SELECT pg_catalog.setval('public.office_id_seq', 5, true);
 -- Name: refresh_token_id_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
 --
 
-SELECT pg_catalog.setval('public.refresh_token_id_seq', 113, true);
+SELECT pg_catalog.setval('public.refresh_token_id_seq', 121, true);
 
 
 --
@@ -702,7 +696,7 @@ SELECT pg_catalog.setval('public.roles_id_seq', 3, true);
 -- Name: suggested_post_id_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
 --
 
-SELECT pg_catalog.setval('public.suggested_post_id_seq', 2, true);
+SELECT pg_catalog.setval('public.suggested_post_id_seq', 8, true);
 
 
 --
@@ -1056,7 +1050,7 @@ ALTER TABLE ONLY public.users_roles
     ADD CONSTRAINT users_roles_user_id_fkey FOREIGN KEY (user_id) REFERENCES public.users(id);
 
 
--- Completed on 2024-05-06 15:02:30
+-- Completed on 2024-05-09 19:45:43
 
 --
 -- PostgreSQL database dump complete

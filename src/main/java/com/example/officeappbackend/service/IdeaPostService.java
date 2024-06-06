@@ -197,9 +197,7 @@ public class IdeaPostService {
             filterName = filters.get(sortingFilterId);
         }
         List<Long> offices = filterDto.getOfficesId();
-
         List<IdeaPostDto> posts = new ArrayList<>();
-
         for(Long id : offices){
             List<IdeaPost> list = ideaPostRepository.findByOfficeId(officeService.findById(id).orElse(null));
 
@@ -221,7 +219,6 @@ public class IdeaPostService {
                 }
             }
         }
-
         return showPostsByContract(posts, filterName, page, pageSize);
     }
 
