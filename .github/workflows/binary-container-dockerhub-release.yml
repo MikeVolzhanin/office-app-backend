@@ -1,4 +1,4 @@
-name: Docker, Binary, Release
+name: Docker, Jar(Binary), Release
 
 on:
   push:
@@ -19,14 +19,27 @@ jobs:
           java-version: '19'
           distribution: 'adopt'
 
-      - name: Build Binary
+      - name: Build Jar
         run: mvn -B package --file pom.xml
 
-      - name: Upload JAR to release
-        uses: actions/upload-release-asset@v1
+      - name: Create Release
+        id: create_release
+        uses: actions/create-release@v1
+        env:
+          GITHUB_TOKEN: ${{ secrets.GH_TOKEN }}
         with:
-          upload_url: ${{ github.event.release.upload_url }}
-          asset_path: ./target/office-app-backend-0.0.1-SNAPSHOT.jar  # Путь к вашему JAR файлу
+          tag_name: 'v${{ github.run_number }}'
+          release_name: 'Release v${{ github.run_number }}'
+          draft: false
+          prerelease: false
+
+      - name: Upload Release Asset
+        uses: actions/upload-release-asset@v1
+        env:
+          GITHUB_TOKEN: ${{ secrets.GH_TOKEN }}
+        with:
+          upload_url: ${{ steps.create_release.outputs.upload_url }}
+          asset_path: ./target/office-app-backend-0.0.1-SNAPSHOT.jar
           asset_name: office-app-backend-0.0.1-SNAPSHOT.jar
           asset_content_type: application/java-archive
 
